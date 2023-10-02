@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300;1,400&display=swap');
+
+[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  --primary: #fae127;
+  --primary-hover: #f8e23e;
+  --primary-focus: rgba(216, 213, 27, 0.125);
+  --secondary: #2beded;
+
+  --primary-inverse: #FFF;
+}
+
+/* Pink Dark scheme (Auto) */
+/* Automatically enabled if user has Dark mode enabled */
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --primary: #fae127;
+    --primary-hover: #f8e23e;
+    --primary-focus: rgba(216, 213, 27, 0.125);
+    --secondary: #2beded;
+
+    --primary-inverse: #FFF;
+    --background-color: #0c0c0c;
+  }
+}
+
+/* Pink Dark scheme (Forced) */
+/* Enabled if forced with data-theme="dark" */
+[data-theme="dark"] {
+  --primary: #fae127;
+  --primary-hover: #f8e23e;
+  --primary-focus: rgba(216, 213, 27, 0.125);
+    --secondary: #2beded;
+
+  --primary-inverse: #FFF;
+
+}
+
+/* Pink (Common styles) */
+:root {
+  --font-family: 'JetBrains Mono', monospace;  
+  --form-element-active-border-color: var(--primary);
+  --form-element-focus-color: var(--primary-focus);
+  --switch-color: var(--primary-inverse);
+  --switch-checked-background-color: var(--primary);
+  --secondary: #2beded;
+}
+
+a {
+  color: white !important;
+}
+
+.text-4xl {
+  font-size: 120px;
+}
+
+.text-regular {
+  font-weight: lighter;
+}
+
+.nav-img {
+  height: var(--font-size);
+  display: block;
+}
+
+.nav-with-img {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: center;
+}
+
+a, .accented-text {
+  text-decoration: underline !important;
+  text-underline-offset: 8px;
+  text-underline-position: above;
+  text-decoration-color: var(--primary) !important;
+  transition: text-decoration-color 0.3s;
+}
+
+
+a:hover, .accented-text:hover {
+  text-decoration-color: var(--secondary) !important;
+  transition: text-decoration-color 0.3s;
+
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+section, nav {
+  border-bottom: 1px solid rgb(56, 56, 56);
+}
+
+.fancy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.fancy * {
+  border: 1px solid #6eff30;
+  color: #6eff30 !important;
+  padding: 10px;
+  background: #14200f;
+}
+
+.centered {
+
+}

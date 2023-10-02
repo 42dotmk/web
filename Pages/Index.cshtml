@@ -1,0 +1,31 @@
+﻿@page
+@{
+    Layout = null;
+}
+@model PrivacyModel
+@using static CC.CSX.HtmlElements;
+@using static CC.CSX.HtmlAttributes;
+@using static BaseWeb.HtmlItemExtensions;
+@using static BaseWeb.Layout;
+
+@{
+    ViewData["Title"] = "Base42";
+}
+
+@CSX(WithLayout(
+    "Base42",
+    Section(
+        H1("Hello World"),
+        P("Base42 is the all new hub for tech enthusiasts.")
+    ),
+    Div(@class("grid centered"),
+        Div(
+            Jumbo("Bring your curiosity"),
+            P("Our mission is simple yet profound: to provide a collaborative environment where curiosity is celebrated, ethical hacking practices are championed, and knowledge flows freely. We're not just a physical space; we're a dynamic community of like-minded individuals who believe in the power of technology to shape the future.")
+        ),
+        Div(
+            @class("fancy"),
+            P("Base42 is the all new hub for tech enthusiasts.")
+        )
+    )
+))

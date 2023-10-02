@@ -1,0 +1,18 @@
+﻿@page
+@{
+    Layout = null;
+}
+@model PrivacyModel
+@using static CC.CSX.HtmlElements;
+@using static BaseWeb.HtmlItemExtensions;
+@using static BaseWeb.Layout;
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+@CSX(WithLayout(
+    "Privacy Policy",
+    P("Use this page to detail your site's privacy policy.")
+))
+
