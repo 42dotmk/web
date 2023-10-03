@@ -5,6 +5,7 @@
 
 node_modules/
 dist/
+wwwroot/*.html
 
 # dotenv files
 .env
