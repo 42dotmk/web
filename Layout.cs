@@ -28,7 +28,7 @@ public static class Layout
 
         var NavBar = Nav(
             Div(
-                @class("container mx-auto flex justify-between items-center"),
+                @class("fixed z-1 bg-black bg-opacity-30 w-full mx-auto flex justify-between items-center"),
                 A(@href("/"), @class("text-white text-xl font-bold"),
                     ImgSrc("img/base.svg", style("height: 100px; width: 200px;"))
                 ),
@@ -53,12 +53,15 @@ public static class Layout
                 Meta(charset("utf-8")),
                 LinkHref("css/fonts.css"),
                 LinkHref("css/output.css"),
+                LinkHref("css/crt.css"),
                 Meta(name("viewport"), content("width=device-width, initial-scale=1.0"))
             ),
             Body(
                 @class("bg-white dark:bg-black dark:text-white"),
                 NavBar,
-                Main(items.Append(@class("px-4 w-full prose dark:prose-invert prose-lg max-w-none")).ToArray())
+                Main(items.Append(
+                    @class("dark:prose-invert prose-lg")
+                ).ToArray())
             )
         );
     }

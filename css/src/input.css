@@ -4,53 +4,80 @@
 
 /* Pink (Common styles) */
 :root {
-  --font-family: 'JetBrains Mono', monospace;  
-  --primary: #fae127;
-  --primary-hover: #f8e23e;
-  --primary-focus: rgba(216, 213, 27, 0.125);
-  --secondary: #2beded;
-  --primary-inverse: #FFF;
+    --font-family: 'JetBrains Mono', monospace;
+    --primary: #fae127;
+    --primary-hover: #f8e23e;
+    --primary-focus: rgba(216, 213, 27, 0.125);
+    --secondary: #2beded;
+    --primary-inverse: #FFF;
 }
 
 .nav-img {
-  height: 1rem;
-  display: block;
+    height: 1rem;
+    display: block;
 }
 
 .nav-with-img {
-  display: flex;
-  flex-direction: row;
-  column-gap: 10px;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
 }
 
-a, .accented-text {
-  text-decoration: underline !important;
-  text-underline-offset: 8px;
-  text-underline-position: above;
-  text-decoration-color: var(--primary) !important;
-  transition: text-decoration-color 0.3s;
+.accented-text {
+    text-decoration: underline !important;
+    text-underline-offset: 8px;
+    text-underline-position: above;
+    text-decoration-color: var(--primary) !important;
+    transition: text-decoration-color 0.3s;
 }
 
-a:hover, .accented-text:hover {
-  text-decoration-color: var(--secondary) !important;
-  transition: text-decoration-color 0.3s;
+.accented-text:hover {
+    text-decoration-color: var(--secondary) !important;
+    transition: text-decoration-color 0.3s;
 }
 
 section, nav {
-  border-bottom: 1px solid rgb(56, 56, 56);
+    border-bottom: 1px solid rgb(56, 56, 56);
 }
 
 .fancy {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .fancy * {
-  border: 1px solid #6eff30;
-  color: #6eff30 !important;
-  padding: 10px;
-  background: #14200f;
+    border: 1px solid #6eff30;
+    color: #6eff30 !important;
+    padding: 10px;
+    background: #14200f;
+}
+
+.cta-button-primary, .cta-button-secondary {
+    @apply decoration-0
+    bg-secondary
+    uppercase
+    text-black
+    hover:bg-primary
+    py-4
+    px-6
+    text-lg
+    font-semibold
+    transition
+    duration-300
+    mr-4
+    ease-in-out;
+}
+
+.cta-button-secondary {
+    @apply
+    bg-transparent
+    border-2
+    border-secondary
+    hover:bg-transparent
+    hover:border-primary
+    hover:text-primary
+    text-secondary;
 }

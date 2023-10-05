@@ -1,0 +1,351 @@
+/*
+AnderShell - Just a small CSS demo
+
+Copyright (c) 2011-2018, Anders Evenrud <andersevenrud@gmail.com>
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+:root {
+  --global-font-size: 24px;
+  --global-line-height: 1.4em;
+  --global-space: 10px;
+  --font-stack: monofont, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  --mono-font-stack: monofont, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  --background-color: #000906;
+  --page-width: 60em;
+  --font-color: #e8e9ed;
+  --invert-font-color: #000906;
+  --secondary-color: #a3abba;
+  --tertiary-color: #a3abba;
+  --primary-color: #fae126;
+  --accent-color: hsl(180.03deg 84.3% 54.9% );
+  --error-color: #ff3c74;
+  --progress-bar-background: #3f3f44;
+  --progress-bar-fill: #62e7ff;
+  --code-bg-color: #3f3f44;
+  --input-style: solid;
+  --display-h1-decoration: none;
+}
+
+#terminal {
+  padding: 1rem;
+}
+
+#info {
+  padding: .5em;
+  right: 0
+}
+
+#ga,
+#info {
+  bottom: 0;
+  position: absolute
+}
+
+#ga {
+  left: 0
+}
+
+#crt {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translateZ(0);
+  -webkit-user-select: none;
+  backface-visibility: hidden;
+  background: #7b8e78;
+  box-shadow: inset .25em .25em 2px hsla(0, 0%, 100%, .4), inset -.25em -.25em 2px rgba(0, 0, 0, .4);
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+  perspective: 1000;
+  transform: translateZ(0);
+  user-select: none;
+  z-index: 10
+}
+
+#screen:after,
+#screen:before {
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#screen:after {
+  background: linear-gradient(hsla(0, 0%, 100%, .8), hsla(0, 0%, 100%, .2));
+  opacity: .1;
+  z-index: 60
+}
+
+#wrapper {
+  -webkit-animation: pulse 5s linear infinite;
+  -webkit-transform: skewX(.5deg);
+  -webkit-transform-origin: 50% 50%;
+  animation: pulse 5s linear infinite;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: skewX(.5deg);
+  transform-origin: 50% 50%;
+  overflow: hidden;
+}
+
+#wrapper:before {
+  background: radial-gradient(ellipse at center, rgba(0, 30, 30, 0) 0, rgba(0, 30, 30, .5) 100%);
+  z-index: 31
+}
+
+#wrapper:after,
+#wrapper:before {
+  bottom: 0;
+  content: "";
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0
+}
+
+#wrapper:after {
+  -webkit-animation: glow 2s linear infinite;
+  animation: glow 2s linear infinite;
+  background: radial-gradient(ellipse at center, var(--accent-color) 0, rgba(0, 255, 119, 0) 100%);
+  opacity: .5;
+  z-index: 32
+}
+
+#interlace {
+  background: linear-gradient(#888 50%, #000 0);
+  background-repeat: repeat-y;
+  background-size: 100% 4px;
+  bottom: 0;
+  left: 0;
+  opacity: .25;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 21
+}
+
+#envelope {
+  -webkit-animation: skew 5s linear infinite;
+  animation: skew 5s linear infinite;
+  background: rgba(0, 0, 0, .25);
+  border-radius: .5em;
+  padding: 1em;
+  bottom: 1em;
+  left: 1em;
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  z-index: 40;
+}
+
+#scanline {
+  -webkit-animation: scanline 1.25s linear infinite;
+  animation: scanline 1.25s linear infinite;
+  background: linear-gradient(180deg, transparent 0, snow 50%, var(--accent-color) 0, transparent);
+  height: 1em;
+  left: 0;
+  opacity: .1;
+  position: absolute;
+  right: 0;
+  top: 0
+}
+
+#terminal {
+  height: 100%;
+  position: relative;
+  width: 100%;
+  z-index: 50
+}
+
+#output {
+  font-family: monofont;
+  font-size: inherit;
+}
+
+#terminal textarea {
+  -webkit-animation: blur 5s linear infinite;
+  animation: blur 5s linear infinite;
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--accent-color);
+  display: block;
+  font-family: monofont;
+  font-size: inherit;
+  height: 100%;
+  line-height: 1.25;
+  margin: 0;
+  outline: 0 none;
+  overflow: hidden;
+  padding: 1em;
+  pointer-events: none;
+  resize: none;
+  text-shadow: 0 0 2px rgba(10, 255, 10, .8);
+  white-space: pre-wrap;
+  width: 100%
+}
+
+@-webkit-keyframes scanline {
+  0% {
+    top: 0
+  }
+
+  to {
+    top: calc(100% - 20px)
+  }
+}
+
+@keyframes scanline {
+  0% {
+    top: 0
+  }
+
+  to {
+    top: calc(100% - 20px)
+  }
+}
+
+@-webkit-keyframes skew {
+  0% {
+    -webkit-transform: skewX(.5deg);
+    transform: skewX(.5deg)
+  }
+
+  8% {
+    -webkit-transform: skewX(1deg) scale(1.0001);
+    transform: skewX(1deg) scale(1.0001)
+  }
+
+  15% {
+    -webkit-transform: skewX(.6deg) skewY(-.05deg);
+    transform: skewX(.6deg) skewY(-.05deg)
+  }
+
+  30% {
+    -webkit-transform: skewX(.6deg);
+    transform: skewX(.6deg)
+  }
+
+  to {
+    -webkit-transform: skewX(.1deg);
+    transform: skewX(.1deg)
+  }
+}
+
+@keyframes skew {
+  0% {
+    -webkit-transform: skewX(.5deg);
+    transform: skewX(.5deg)
+  }
+
+  8% {
+    -webkit-transform: skewX(1deg) scale(1.0001);
+    transform: skewX(1deg) scale(1.0001)
+  }
+
+  15% {
+    -webkit-transform: skewX(.6deg) skewY(-.05deg);
+    transform: skewX(.6deg) skewY(-.05deg)
+  }
+
+  30% {
+    -webkit-transform: skewX(.6deg);
+    transform: skewX(.6deg)
+  }
+
+  to {
+    -webkit-transform: skewX(.1deg);
+    transform: skewX(.1deg)
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1)
+  }
+
+  50% {
+    -webkit-transform: scale(1.005);
+    transform: scale(1.005)
+  }
+
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1)
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1)
+  }
+
+  50% {
+    -webkit-transform: scale(1.005);
+    transform: scale(1.005)
+  }
+
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1)
+  }
+}
+
+@-webkit-keyframes blur {
+  50% {
+    color: var(--accent-color);
+    text-shadow: 2px 0 2px hsla(0, 0%, 100%, .8)
+  }
+}
+
+@keyframes blur {
+  50% {
+    color: var(--accent-color);
+    text-shadow: 2px 0 2px hsla(0, 0%, 100%, .8)
+  }
+}
+
+@-webkit-keyframes glow {
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2)
+  }
+}
+
+@keyframes glow {
+  50% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2)
+  }
+}

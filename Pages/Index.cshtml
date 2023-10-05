@@ -8,20 +8,86 @@
 @{
     ViewData["Title"] = "Base42";
 }
+
+@{
+    var FancyBg = Div(
+        @class("-z-10 h-full"),
+        id("wrapper"),
+        Div(id("content"),
+            Div(id("interlace")),
+            Div(id("scanline")),
+            Div(id("envelope"),
+                Div(id("terminal"),
+                    Div(id("output"))
+                )
+            )
+        )
+    );
+
+    var CtaButton = (string text, string hrefAttr = "#", string type = "primary") =>
+    {
+        var bgClass = type == "primary" 
+            ? "bg-secondary hover:bg-primary" 
+            : "bg-transparent border-2 border-cyan-400";
+
+        return A(
+            href(hrefAttr),
+            (type == "primary" 
+                ? @class("cta-button-primary")
+                : @class("cta-button-secondary")
+            ),
+            text
+        );
+    };
+
+    var Hero = Div(
+        Div(
+            @class("text-white py-16 position-relative h-full flex justify-center items-center"),
+            FancyBg,
+            Div(
+                @class("pt-20 container mx-auto text-center"),
+                Div(
+                    @class("justify-center flex align-items center"),
+                    ImgSrc("img/base.svg", @class("h-[80px]"))
+                ),
+                H1(
+                    @class("mt-10 text-4xl font-bold text-primary"),
+                    "Unlocking Creativity, Innovation, and Collaboration"
+                ),
+                P(
+                    @class("text-lg mb-8 text-secondary"),
+                    "More than just a space; Whether you're a seasoned coder, a hardware wizard, or simply a curious mind eager to learn, you've found your home."
+                ),
+                Div(
+                    CtaButton("Become a Member"),
+                    CtaButton("Learn More", "", "secondary")
+                )
+            )
+        ));
+}
+
 @CSX(WithLayout(
     "Base42",
-    Section(
-        H1("Hello World"),
-        P("Base42 is the all new hub for tech enthusiasts.")
-    ),
-    Div(@class("grid centered"),
+    Hero,
+    Div(@class("container mx-auto mt-10"),
         Div(
             Jumbo("Bring your curiosity"),
             P("Our mission is simple yet profound: to provide a collaborative environment where curiosity is celebrated, ethical hacking practices are championed, and knowledge flows freely. We're not just a physical space; we're a dynamic community of like-minded individuals who believe in the power of technology to shape the future.")
-        ),
+            ),
         Div(
             @class("fancy"),
             P("Base42 is the all new hub for tech enthusiasts.")
+            )
+    ),
+    Div(@class("container mx-auto mt-10"),
+        Div(
+            Jumbo("Bring your curiosity"),
+            P("Our mission is simple yet profound: to provide a collaborative environment where curiosity is celebrated, ethical hacking practices are championed, and knowledge flows freely. We're not just a physical space; we're a dynamic community of like-minded individuals who believe in the power of technology to shape the future.")
+            ),
+        Div(
+            @class("fancy"),
+            P("Base42 is the all new hub for tech enthusiasts.")
+            )
         )
     )
-))
+)
