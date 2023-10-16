@@ -11,7 +11,7 @@
 
 @{
     var FancyBg = Div(
-        @class("-z-10 h-full"),
+        @class("-z-10"),
         id("wrapper"),
         Div(id("content"),
             Div(id("interlace")),
@@ -26,10 +26,6 @@
 
     var CtaButton = (string text, string hrefAttr = "#", string type = "primary") =>
     {
-        var bgClass = type == "primary" 
-            ? "bg-secondary hover:bg-primary" 
-            : "bg-transparent border-2 border-cyan-400";
-
         return A(
             href(hrefAttr),
             (type == "primary" 
@@ -42,23 +38,26 @@
 
     var Hero = Div(
         Div(
-            @class("text-white py-16 position-relative h-full flex justify-center items-center"),
-            FancyBg,
+            @class("text-white py-16 relative h-full flex justify-center items-center"),
             Div(
-                @class("pt-20 container mx-auto text-center"),
+                @class(""),
+                FancyBg
+            ),
+            Div(
+                @class("container md:pt-20 mx-auto text-center"),
                 Div(
-                    @class("justify-center flex align-items center"),
-                    ImgSrc("img/base.svg", @class("h-[80px]"))
+                    @class("justify-center flex align-items center")
                 ),
                 H1(
-                    @class("mt-10 text-4xl font-bold text-primary"),
+                    @class("mt-10 text-lg md:text-4xl font-bold text-primary"),
                     "Unlocking Creativity, Innovation, and Collaboration"
                 ),
                 P(
-                    @class("text-lg mb-8 text-secondary"),
+                    @class("text-sm md:text-4xl  mb-8 text-secondary"),
                     "More than just a space; Whether you're a seasoned coder, a hardware wizard, or simply a curious mind eager to learn, you've found your home."
                 ),
                 Div(
+                    @class("flex justify-center items-center flex-wrap"),
                     CtaButton("Become a Member"),
                     CtaButton("Learn More", "", "secondary")
                 )

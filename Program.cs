@@ -39,7 +39,7 @@ app.MapGet("/generate-ssg", async (IEnumerable<EndpointDataSource> endpointSourc
             continue;
         }
 
-        var url = endpoint.ToString().Substring(1);
+        var url = endpoint.ToString().Substring(1).ToLower();
         var res = await httpClient.GetAsync($"/{url}");
         var path = $"wwwroot/{url}.html";
         var fileWrite = File.Open(path, FileMode.OpenOrCreate);

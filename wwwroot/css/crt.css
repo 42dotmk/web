@@ -159,11 +159,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   background: rgba(0, 0, 0, .25);
   border-radius: .5em;
   padding: 1em;
-  bottom: 1em;
-  left: 1em;
+  bottom: .3em;
+  left: .3em;
   position: absolute;
-  right: 1em;
-  top: 1em;
+  right: .3em;
+  top: 0em;
   z-index: 40;
 }
 

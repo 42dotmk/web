@@ -1,5 +1,6 @@
 ﻿@page
 @using static CC.CSX.HtmlElements;
+@using static CC.CSX.HtmlAttributes;
 @using static BaseWeb.HtmlItemExtensions;
 @using static BaseWeb.Layout;
 
@@ -9,24 +10,27 @@
 
 @CSX(WithLayout(
     "Privacy Policy",
-    H2("About Base42"),
-    P(
-        "We are Base42, a dynamic community of tech enthusiasts, innovators, and creators. Our journey began with a shared passion for technology and a vision to foster a collaborative environment where ideas flourish and knowledge flows freely."
-    ),
-    P(
-        "At Base42, we believe in the power of diversity and inclusion. Our diverse membership brings together people from various backgrounds, skills, and experiences, making our community rich with perspectives and ideas."
-    ),
-    P(
-        "Our mission is to explore the boundless possibilities of technology, promote ethical hacking practices, and share our knowledge with the world. We are committed to upholding the highest ethical standards in everything we do, whether it's enhancing cybersecurity, protecting digital privacy, or contributing to a safer digital landscape."
-    ),
-    P(
-        "Through workshops, lectures, collaborative projects, and an open-access ethos, we empower our members and the wider community with the tools and skills needed to thrive in an ever-changing technological landscape. We celebrate innovation, encourage experimentation, and embrace failure as a stepping stone to success."
-    ),
-    P(
-        "Base42 is more than just a physical space; it's a vibrant network of like-minded individuals. We are united by our shared love for technology and our commitment to community building. Together, we support each other's projects, share our knowledge, and create lasting connections that extend beyond our hackerspace's walls."
-    ),
-    P(
-        "Join us on this exciting journey at Base42, where curiosity knows no bounds, creativity thrives, and innovation takes flight. Together, we shape the future through technology, ethics, and the power of community."
+    Div(
+        @class("p-8"),
+        H2("About Base42"),
+        P(
+            "We are Base42, a dynamic community of tech enthusiasts, innovators, and creators. Our journey began with a shared passion for technology and a vision to foster a collaborative environment where ideas flourish and knowledge flows freely."
+        ),
+        P(
+            "At Base42, we believe in the power of diversity and inclusion. Our diverse membership brings together people from various backgrounds, skills, and experiences, making our community rich with perspectives and ideas."
+        ),
+        P(
+            "Our mission is to explore the boundless possibilities of technology, promote ethical hacking practices, and share our knowledge with the world. We are committed to upholding the highest ethical standards in everything we do, whether it's enhancing cybersecurity, protecting digital privacy, or contributing to a safer digital landscape."
+        ),
+        P(
+            "Through workshops, lectures, collaborative projects, and an open-access ethos, we empower our members and the wider community with the tools and skills needed to thrive in an ever-changing technological landscape. We celebrate innovation, encourage experimentation, and embrace failure as a stepping stone to success."
+        ),
+        P(
+            "Base42 is more than just a physical space; it's a vibrant network of like-minded individuals. We are united by our shared love for technology and our commitment to community building. Together, we support each other's projects, share our knowledge, and create lasting connections that extend beyond our hackerspace's walls."
+        ),
+        P(
+            "Join us on this exciting journey at Base42, where curiosity knows no bounds, creativity thrives, and innovation takes flight. Together, we shape the future through technology, ethics, and the power of community."
+        )
     )
 ))
 

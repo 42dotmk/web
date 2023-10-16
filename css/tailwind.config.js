@@ -19,6 +19,10 @@ module.exports = {
   },
   theme: {
     extend: {
+      colors: {
+        primary: "#fae127",
+        secondary: "#2beded",
+      },
       fontFamily: {
         'sans': ['JetBrains Mono', 'sans-serif'],
       }
