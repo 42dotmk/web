@@ -132,12 +132,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   top: 0
 }
 
-#wrapper:after {
-  -webkit-animation: glow 2s linear infinite;
-  animation: glow 2s linear infinite;
+#wrapper:afte1r {
+  -webkit-animation: glow2x 2s linear infinite;
+  animation: glow2x 2s linear infinite;
+  /* background: url('/img/photo/20230919_180905.jpg'); */
+  background-size: cover;
+  background-position: 50% 20%;
   background: radial-gradient(ellipse at center, var(--accent-color) 0, rgba(0, 255, 119, 0) 100%);
-  opacity: .5;
-  z-index: 32
+  opacity: .2;
+  z-index: 32;
+}
+
+#wrapper:before {
+  -webkit-animation: fadeIn 2s linear;
+  animation: fadeIn 2s linear; 
+  opacity: .7;
+  background: url('/img/photo/vlcsnap-2023-10-25-00h46m47s680.png');
+  background-size: cover;
+  background-position: 50% 40%;
+  /* background: radial-gradient(ellipse at center, var(--accent-color) 0, rgba(0, 255, 119, 0) 100%); */
+  z-index: 32;
 }
 
 #interlace {
@@ -336,6 +350,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   }
 }
 
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: .7;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: .7;
+  }
+}
+
 @-webkit-keyframes glow {
   50% {
     -webkit-transform: scale(1.2);
@@ -347,5 +379,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   50% {
     -webkit-transform: scale(1.2);
     transform: scale(1.2)
+  }
+}
+
+@-webkit-keyframes glow2x {
+  50% {
+    -webkit-transform: scale(2.2);
+    transform: scale(2.2)
+  }
+}
+
+@keyframes glow2x {
+  50% {
+    -webkit-transform: scale(2.2);
+    transform: scale(2.2)
   }
 }

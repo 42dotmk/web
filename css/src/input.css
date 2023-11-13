@@ -24,6 +24,10 @@
     align-items: center;
 }
 
+a:hover {
+    text-decoration: underline !important;
+}
+
 .accented-text {
     text-decoration: underline !important;
     text-underline-offset: 8px;
@@ -57,7 +61,7 @@ section, nav {
 
 .cta-button-primary, .cta-button-secondary {
     @apply decoration-0
-    bg-secondary
+    bg-secondary-400
     uppercase
     text-black
     hover:bg-primary
@@ -76,9 +80,42 @@ section, nav {
     @apply
     bg-transparent
     border-2
-    border-secondary
+    border-secondary-500
     hover:bg-transparent
     hover:border-primary
     hover:text-primary
-    text-secondary;
+    text-secondary-500;
+}
+
+
+.facility {
+    @apply flex justify-center items-center flex-col;
+}
+
+
+.facility img {
+    height: 250px;
+    
+    object-fit: cover;
+    clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+}
+
+.facility-grid {
+    @apply grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2
+}
+
+.facility-grid h4 {
+    @apply text-white m-0 text-center;
+}
+
+hr {
+    @apply border-secondary-400;
+}
+
+#krc {
+    width: 10px;
+    height: 20px;
+    background: white;
+    position: absolute;
+    z-index: 1000000;
 }
