@@ -123,3 +123,11 @@ hr {
 #mobile-menu summary {
     display: block;
 }
+
+details summary::-webkit-details-marker {
+    display:none;
+}
+
+summary { 
+    list-style: none;
+}

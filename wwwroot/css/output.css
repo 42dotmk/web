@@ -848,10 +848,6 @@ video {
   display: block;
 }
 
-.inline {
-  display: inline;
-}
-
 .flex {
   display: flex;
 }
@@ -878,20 +874,6 @@ video {
 
 .flex-1 {
   flex: 1 1 0%;
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 3s linear infinite;
 }
 
 .cursor-pointer {
@@ -930,16 +912,8 @@ video {
   overflow: hidden;
 }
 
-.overflow-x-hidden {
-  overflow-x: hidden;
-}
-
 .overflow-y-scroll {
   overflow-y: scroll;
-}
-
-.whitespace-nowrap {
-  white-space: nowrap;
 }
 
 .border-r-2 {
@@ -982,11 +956,6 @@ video {
   padding: 2rem;
 }
 
-.py-12 {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-}
-
 .py-16 {
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -1019,19 +988,14 @@ video {
   font-weight: 700;
 }
 
-.text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-primary {
-  --tw-text-opacity: 1;
-  color: rgb(250 225 39 / var(--tw-text-opacity));
-}
-
 .text-secondary-500 {
   --tw-text-opacity: 1;
   color: rgb(8 208 210 / var(--tw-text-opacity));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 /* Pink (Common styles) */
@@ -1198,6 +1162,14 @@ hr {
 
 #mobile-menu summary {
   display: block;
+}
+
+details summary::-webkit-details-marker {
+  display:none;
+}
+
+summary {
+  list-style: none;
 }
 
 :is(.dark .dark\:prose-invert) {
