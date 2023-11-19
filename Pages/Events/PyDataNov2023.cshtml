@@ -1,0 +1,18 @@
+@page
+@using static CC.CSX.HtmlElements;
+@using static CC.CSX.HtmlAttributes;
+@using static BaseWeb.HtmlItemExtensions;
+@using static BaseWeb.Layout;
+
+@{
+    ViewData["Title"] = "PyData Skopje Meetup - Nov. 2023";
+}
+
+@CSX(WithLayout(
+    "PyData Skopje Meetup - Nov. 2023",
+    Div(
+        @class("p-4"),
+        Markdown("content/PyDataNov2023.md")
+    )
+))
+

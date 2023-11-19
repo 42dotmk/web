@@ -39,13 +39,17 @@
         Div(
             @class("text-white py-16 relative h-full flex justify-center items-center"),
             Div(
-                @class(""),
+                @class("overflow-hidden"),
                 FancyBg
             ),
             Div(
                 @class("container md:pt-20 mx-auto text-center"),
                 Div(
                     @class("justify-center flex align-items center")
+                ),
+                Div(
+                    Span("Up next:"),
+                    AHref("/events/pydatanov2023", "PyData Meetup Nov. 23, 18:00", @class("text-secondary-500 "))
                 ),
                 P(
                     @class("text-sm md:text-2xl text-secondary"),
@@ -54,6 +58,9 @@
                 H1(
                     @class("mt-10 text-lg md:text-4xl  mb-20 font-bold"),
                     "Make your ideas come to life"
+                ),
+                H1(
+                    @class("mt-10 text-lg md:text-4xl  mb-20 font-bold")
                 ),
                 Div(
                     @class("flex justify-center items-center flex-wrap"),

@@ -22,7 +22,7 @@ You can see our agenda for the week below:
 Or, book your own event:
 
 <center style="margin-top: 50px; margin-bottom: 50px;">
-  <a href="#" class="cta-button-secondary mt-10">
+  <a  onclick="alert('Coming soon!')" href="#" class="cta-button-secondary mt-10">
     ./book-event.sh
   </a>
 </center>
@@ -103,7 +103,7 @@ Oh... there's also this map:
 <iframe
   class="w-full"
   height="400"
-  style="border:0"
+  style="border:0; width: 100%"
   loading="lazy"
   allowfullscreen
   referrerpolicy="no-referrer-when-downgrade"

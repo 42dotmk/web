@@ -34,10 +34,10 @@ public static class Layout
     public static HtmlNode WithLayout(string title, params HtmlItem[] items)
     {
         var navItems = new List<NavItem>() {
-            new() { Text = "./about.html", Url = "#about", Icon = "/img/icons/html.svg" },
-            new() { Text = "./events.html", Url = "#events", Icon = "/img/icons/html.svg" },
-            new() { Text = "./projects.html", Url = "#projects", Icon = "/img/icons/html.svg" },
-            new() { Text = "./contact.html", Url = "#contact", Icon = "/img/icons/html.svg" },
+            new() { Text = "./about.html", Url = "/#about", Icon = "/img/icons/html.svg" },
+            new() { Text = "./events.html", Url = "/#events", Icon = "/img/icons/html.svg" },
+            new() { Text = "./projects.html", Url = "/#projects", Icon = "/img/icons/html.svg" },
+            new() { Text = "./contact.html", Url = "/#contact", Icon = "/img/icons/html.svg" },
         };
 
         var NavItems = () => Fragment(
@@ -67,22 +67,19 @@ public static class Layout
         );
 
         var NavBar = Nav(
-            // Div(
-            //     @class("hidden md:flex px-10 py- sticky z-1 w-full flex justify-between items-center"),
-            //     A(href("/"), @class("text-white text-xl font-bold"),
-            //         ImgSrc("/img/base.svg", style("height: 100px; width: 200px;"))
-            //     ),
-            //     Div(
-            //         @class(""),
-            //         Button(@id("menu-toggle"), @class("text-white"))
-            //     ),
-            //     Ul(@class("hidden md:flex space-x-4"),
-            //         NavItems()
-            //     )
-            // ),
             Div(@id("mobile-menu"), @class("bg-black bg-opacity-30 p-4 h-full border-r-secondary-500 border-r-2"),
-                Ul(@class("flex flex-col space-y-4"),
-                    NavItems()
+                Details(
+                    ("open", "true"),
+                    Summary(
+                        Div(@class("space-y-2 cursor-pointer"),
+                            Span(@class("block w-6 h-0.5 bg-gray-600")),
+                            Span(@class("block w-6 h-0.5 bg-gray-600")),
+                            Span(@class("block w-6 h-0.5 bg-gray-600"))
+                        ) 
+                    ),
+                    Ul(@class("flex flex-col space-y-4"),
+                        NavItems()
+                    )
                 )
             ));
 

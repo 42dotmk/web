@@ -119,3 +119,7 @@ hr {
     position: absolute;
     z-index: 1000000;
 }
+
+#mobile-menu summary {
+    display: block;
+}
