@@ -4,16 +4,16 @@
     <img 
       class="w-[300px]"
       style="width: 500px"
-      src="/img/events/pydatanov2023-meetup.jpg" 
+      src="/img/events/pydatanov2023.jpg" 
     />
   </a>
 </div>
 
-# PyData Skopje Meetup - Nov. 23 2023 | 18:00
+# PyData Skopje Meetup - Nov. 30 2023 | 18:00
 ----
 
 
-Join us this Thursday for the latest PyData Meetup in a while, this time around the meet up will be held in Base42, a local hackerspace in Skopje.
+Join us on Thursday, 30.11.2023 for the latest PyData Meetup in a while, this time around the meet up will be held in Base42, a local hackerspace in Skopje.
 
 There will be two interesting talks on very different but very important topics - building cross-platform models with ONNX and a general overview of dependency management in Python, held by Aleksandar Ivanovski and Tomislav Ignjatovski, software engineers at CodeChem.
 
