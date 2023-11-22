@@ -9,7 +9,7 @@
   </a>
 </div>
 
-# PyData Skopje Meetup - Nov. 2023 | 18:00
+# PyData Skopje Meetup - Nov. 23 2023 | 18:00
 ----
 
 
