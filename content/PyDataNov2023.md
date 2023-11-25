@@ -15,7 +15,7 @@
 
 Join us on Thursday, 30.11.2023 for the latest PyData Meetup in a while, this time around the meet up will be held in Base42, a local hackerspace in Skopje.
 
-There will be two interesting talks on very different but very important topics - building cross-platform models with ONNX and a general overview of dependency management in Python, held by Aleksandar Ivanovski and Tomislav Ignjatovski, software engineers at CodeChem.
+There will be two interesting talks on very different but very important topics - building cross-platform models with ONNX and a general overview of dependency management in Python, held by Aleksandar Ivanovski and Tomislav Ignjatov, software engineers at CodeChem.
 
 Here's a short intro into the topics and the speakers:
 
