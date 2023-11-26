@@ -1206,6 +1206,10 @@ summary {
   padding-right: 0.5rem;
 }
 
+#calendar {
+  filter: invert(1) hue-rotate(125deg);
+}
+
 :is(.dark .dark\:prose-invert) {
   --tw-prose-body: var(--tw-prose-invert-body);
   --tw-prose-headings: var(--tw-prose-invert-headings);

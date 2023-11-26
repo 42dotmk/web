@@ -140,3 +140,7 @@ summary {
 #repetitive {
     @apply border-b-2 px-2;
 }
+
+#calendar {
+    filter: invert(1) hue-rotate(125deg);
+}
