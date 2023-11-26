@@ -90,18 +90,23 @@ section, nav {
 
 .facility {
     @apply flex justify-center items-center flex-col;
+    /* clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); */
 }
 
 
 .facility img {
     height: 250px;
-    
+    @apply border-2 border-secondary-500 p-6 transition-all;
     object-fit: cover;
     clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
 }
 
+.facility img:hover {
+    @apply p-2 border-primary;
+}
+
 .facility-grid {
-    @apply grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
 }
 
 .facility-grid h4 {
@@ -130,4 +135,8 @@ details summary::-webkit-details-marker {
 
 summary { 
     list-style: none;
+}
+
+#repetitive {
+    @apply border-b-2 px-2;
 }

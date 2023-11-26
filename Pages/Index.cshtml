@@ -37,19 +37,20 @@
 
     var Hero = Div(
         Div(
-            @class("text-white py-16 relative h-full flex justify-center items-center"),
+            @class("text-white py-16 relative h-full flex justify-center items-center flex-col"),
             Div(
                 @class("overflow-hidden"),
-                FancyBg
+                FancyBg,
+                Div(
+                    Span(">_ ", @class("text-primary")),
+                    Span("Up next:"),
+                    AHref("/events/pydatanov2023", "PyData Meetup Nov. 30, 18:00", @class("text-secondary-500 "))
+                )
             ),
             Div(
                 @class("container md:pt-20 mx-auto text-center"),
                 Div(
                     @class("justify-center flex align-items center")
-                ),
-                Div(
-                    Span("Up next:"),
-                    AHref("/events/pydatanov2023", "PyData Meetup Nov. 30, 18:00", @class("text-secondary-500 "))
                 ),
                 P(
                     @class("text-sm md:text-2xl text-secondary"),
@@ -57,7 +58,7 @@
                 ),
                 H1(
                     @class("mt-10 text-lg md:text-4xl  mb-20 font-bold"),
-                    "Make your ideas come to life"
+                    "Come and <span id='repetitive'>build</span> Base42 with us!"
                 ),
                 H1(
                     @class("mt-10 text-lg md:text-4xl  mb-20 font-bold")
@@ -73,6 +74,27 @@
 @CSX(WithLayout(
     "Base42",
     Hero,
+    Script(@"
+        const items = ['build', 'break', 'make', 'hack', 'invent', 'create', 'explore', 'design', 'collaborate', 'discover', 'engineer', 'prototype', 'code', 'tinker', 'develop', 'iterate', 'solve', 'craft', 'program', 'innovate'];
+        let i = 0;
+        setInterval(function() {
+            const text = document.getElementById('repetitive');
+            i = (i+1) % items.length;
+            text.innerHTML = items[i];
+            if (i % 2 === 0) {
+                text.classList.remove('text-primary');
+                text.classList.remove('border-primary');
+                text.classList.add('text-secondary-500');
+                text.classList.add('border-secondary-500');
+            } else {
+                text.classList.remove('text-secondary-500');
+                text.classList.remove('border-secondary-500');
+                text.classList.add('text-primary');
+                text.classList.add('border-primary');
+            }
+        }, 300);
+    "),
+    Div(@class("text-primary border-secondary-500 border-primary hidden")),
     Div(@class("container mx-auto p-10 text-justify"),
         Markdown("content/About.md")
     )

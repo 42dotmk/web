@@ -37,19 +37,19 @@ Here's just some of what's there at the moment:
 
 <div class="facility-grid">
   <div class="facility">
-    <img src="/img/photo/20230919_180905.jpg" />
+    <img src="/img/photo/3dprinter.webp" />
     <h4>3D Printing Workspace</h4>
   </div>
   <div class="facility">
-    <img src="/img/photo/lounge.jpg" />
+    <img src="/img/photo/lounge.webp" />
     <h4>Lounge</h4>
   </div>
   <div class="facility">
-    <img src="/img/photo/DSC03647.JPG" />
+    <img src="/img/photo/bg.webp" />
     <h4>Events Hall</h4>
   </div>
   <div class="facility">
-    <img src="/img/photo/IMG_8083.jpg" />
+    <img src="/img/photo/workshops.webp" />
     <h4>Workshops Space</h4>
   </div>
 </div>
@@ -63,7 +63,7 @@ Here's some of the recurring projects and groups that meet up @ Base42 regularly
 
 <div class="facility-grid">
   <div class="facility">
-    <img src="/img/photo/robo.jpg" />
+    <img src="/img/photo/robot.webp" />
     <h4>Robotics Simulator</h4>
   </div>
   <div class="facility">
@@ -71,7 +71,7 @@ Here's some of the recurring projects and groups that meet up @ Base42 regularly
     <h4>CSX - C#-HTML Renderer</h4>
   </div>
   <div class="facility">
-    <img src="/img/photo/IMG_8083.jpg" />
+    <img src="/img/photo/rack.webp" />
     <h4>DevOps + Infrastructure</h4>
   </div>
   <div class="facility">
@@ -93,6 +93,7 @@ Here's some of the recurring projects and groups that meet up @ Base42 regularly
 <a class="accented-text" href="https://facebook.com/42dotmk">Facebook</a>
 <a class="accented-text" href="https://x.com/42dotmk">Twitter</a>
 <a class="accented-text" href="https://instagram.com/42dotmk">Instagram</a>
+<a class="accented-text" href="https://linkedin.com/company/42-mk">LinkedIn</a>
 
 You can also shoot us an email at <a class="accented-text" href="mailto:hello@42.mk">hello@42.mk</a>
 

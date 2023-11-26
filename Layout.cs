@@ -44,7 +44,7 @@ public static class Layout
             A(href("/"), @class("hidden md:block text-white text-xl font-bold"),
                 ImgSrc("/img/base.svg", style("height: 100px; width: 200px;"))
             ),
-            Li(AHref("/", "/")),
+            Li(AHref("/", "/home")),
             Fragment(
                 navItems.Select(item => Li(AHref(item.Url,
                     @class("ml-4 nav-with-img"),
@@ -58,6 +58,12 @@ public static class Layout
                 ImgSrc("/img/icons/notebook.svg", @class("nav-img"), style("transform: scale(1.5)")),
                 "/blog.md"
             )),
+            Li(AHref("https://wiki.42.mk",
+                target("_blank"),
+                @class("accented-text nav-with-img"),
+                ImgSrc("/img/icons/globe.svg", @class("nav-img"), style("transform: scale(1.5)")),
+                "/wiki.md"
+            )),
             Li(AHref("https://discord.gg/424xxTZVYX",
                 target("_blank"),
                 @class("accented-text nav-with-img"),
@@ -67,7 +73,7 @@ public static class Layout
         );
 
         var NavBar = Nav(
-            Div(@id("mobile-menu"), @class("bg-black bg-opacity-30 p-4 border-r-secondary-500 border-r-2"),
+            Div(@id("mobile-menu"), @class("bg-black bg-opacity-30 h-full p-4 border-r-secondary-500 border-r-2"),
                 Details(
                     ("open", "true"),
                     Summary(
@@ -109,7 +115,7 @@ public static class Layout
                 @class("bg-white dark:bg-secondary-1000 dark:text-white flex flex-col md:flex-row h-screen"),
                 NavBar,
                 Main(items.Append(
-                    @class("flex-1 overflow-y-scroll dark:prose-invert prose-lg")
+                    @class("flex-1 overflow-y-scroll overflow-x-hidden dark:prose-invert prose-lg")
                 ).Append(
                     Div(
                         @class("text-center p-10"),
