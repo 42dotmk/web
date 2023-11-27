@@ -1,6 +1,6 @@
 
 <div style="display: flex; justify-content: center;">
-  <a target="_blank" href="https://forms.gle/rTiYvKdhhTso32rSA">
+  <a target="_blank" href="https://www.meetup.com/pydata-skopje/events/297539830">
     <img 
       class="w-[300px]"
       style="width: 500px"
@@ -49,7 +49,7 @@ He works as a software engineer at CodeChem, and during his professional career 
 There is limited seating, so please register for the event if you would like to attend.
 
 <center style="margin-top: 50px; margin-bottom: 50px;">
-  <a target="_blank" href="https://forms.gle/rTiYvKdhhTso32rSA" class="cta-button-secondary mt-10">
+  <a target="_blank" href="https://www.meetup.com/pydata-skopje/events/297539830" class="cta-button-secondary mt-10">
     ./register.sh
   </a>
 </center>
