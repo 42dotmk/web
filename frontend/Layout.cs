@@ -57,11 +57,12 @@ public static class Layout
 
         var reqPath = path;
         var locale = CultureInfo.CurrentCulture.Name;
-        if (locale != null)
+        if (string.IsNullOrEmpty(locale))
         {
-            var sep = path.Contains("?") ? "&" : "?";
-            reqPath = $"{path}{sep}locale={locale}";
+            locale = "en";
         }
+        var sep = path.Contains("?") ? "&" : "?";
+        reqPath = $"{path}{sep}locale={locale}";
 
         Console.WriteLine($"Requesting {reqPath}");
 
