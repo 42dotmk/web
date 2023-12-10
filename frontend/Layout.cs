@@ -63,6 +63,8 @@ public static class Layout
             reqPath = $"{path}{sep}locale={locale}";
         }
 
+        Console.WriteLine($"Requesting {reqPath}");
+
         return http.GetFromJsonAsync<JsonObject>(reqPath);
 
     }
