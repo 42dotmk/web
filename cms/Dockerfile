@@ -1,4 +1,4 @@
-FROM node:20 AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -8,5 +8,6 @@ RUN npm install
 
 RUN npm run build
 
-CMD npm run start
+ENV NODE_ENV=production
 
+CMD npm start
