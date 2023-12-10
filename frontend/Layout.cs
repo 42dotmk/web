@@ -97,7 +97,7 @@ public static class Layout
         public string Icon { get; set; }
     }
 
-    public static HtmlNode WithLayout(string title, params HtmlItem[] items)
+    public static async Task<HtmlNode> WithLayout(string title, params HtmlItem[] items)
     {
         var navItems = new List<NavItem>() {
             new() { Text = "./about.html", Url = "/#about", Icon = "/img/icons/html.svg" },
@@ -196,7 +196,7 @@ public static class Layout
                 ).Append(
                     Div(
                         @class("text-center p-10"),
-                        Markdown("content/footer.md")
+                        await MarkdownAsync("home", "Footer")
                     )
                 ).ToArray()),
                 ScriptSrc("/js/site.js")

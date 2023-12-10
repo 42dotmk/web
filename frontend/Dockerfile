@@ -24,6 +24,7 @@ RUN dotnet publish -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 COPY --from=build /app/publish /app
+COPY --from=build /app/content /app/content
 
 WORKDIR /app
 

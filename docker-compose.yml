@@ -33,13 +33,12 @@ services:
     image: ghcr.io/42dotmk/42dotmk-frontend:latest
     command: sleep 1000
     environment:
-      STRAPI_URL: http://strapi:1337/api/
+      STRAPI_URL: http://cms:1337/api/
     ports:
-      - 1234:5000
+      - 1234:8080
     depends_on:
       - db
 
 volumes:
   postgres_data:
   strapi_uploads:
-  

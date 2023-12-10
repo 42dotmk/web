@@ -1,5 +1,4 @@
 ﻿@page
-@model PrivacyModel
 @using static CC.CSX.HtmlElements;
 @using static CC.CSX.HtmlAttributes;
 @using static BaseWeb.HtmlItemExtensions;
@@ -63,7 +62,7 @@
 
 
 
-@CSX(WithLayout(
+@await CSX(WithLayout(
     "Base42",
     Hero,
     Div(@class("text-primary border-secondary-500 border-primary hidden")),
