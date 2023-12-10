@@ -55,14 +55,13 @@ public static class Layout
             BaseAddress = new Uri(Constants.StrapiUrl)
         };
 
-        var reqPath = path;
         var locale = CultureInfo.CurrentCulture.Name;
         if (string.IsNullOrEmpty(locale))
         {
             locale = "en";
         }
         var sep = path.Contains("?") ? "&" : "?";
-        reqPath = $"{path}{sep}locale={locale}";
+        var reqPath = $"{path}{sep}locale={locale}";
 
         Console.WriteLine($"Requesting {reqPath}");
 
