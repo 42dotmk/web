@@ -8,7 +8,7 @@ export default defineConfig({
     minify: 'esbuild',
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
-      name: 'MyLib',
+      name: 'Base42',
       fileName: 'site',
     },
   },
