@@ -2,8 +2,32 @@ using CC.CSX;
 using Markdig;
 using static CC.CSX.HtmlElements;
 using static CC.CSX.HtmlAttributes;
+using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using System.Globalization;
 
 namespace BaseWeb;
+
+public class CultureTemplatePageRouteModelConvention : IPageRouteModelConvention
+{
+    public void Apply(PageRouteModel model)
+    {
+        var selectorCount = model.Selectors.Count;
+
+        for (var i = 0; i < selectorCount; i++)
+        {
+            var selector = model.Selectors[i];
+            model.Selectors.Add(new SelectorModel
+            {
+                AttributeRouteModel = new AttributeRouteModel
+                {
+                    Order = 2,
+                    Template = AttributeRouteModel.CombineTemplates("{culture?}", selector.AttributeRouteModel.Template),
+                }
+            });
+        }
+    }
+};
 
 public static class Layout
 {
@@ -11,7 +35,8 @@ public static class Layout
         items.With(@class("text-1xl text-regular m-0"))
     );
 
-    public static HtmlItem Markdown(string path) {
+    public static HtmlItem Markdown(string path)
+    {
         var content = File.ReadAllText(path);
         var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
 
@@ -20,7 +45,48 @@ public static class Layout
             result
         );
         return div;
-    } 
+    }
+
+
+
+    public static Task<JsonObject?> GetStrapiEntry(string path, string property) {
+        var http = new HttpClient()
+        {
+            BaseAddress = new Uri(Constants.StrapiUrl)
+        };
+
+        var reqPath = path;
+        var locale = CultureInfo.CurrentCulture.Name;
+        if (locale != null)
+        {
+            var sep = path.Contains("?") ? "&" : "?";
+            reqPath = $"{path}{sep}locale={locale}";
+        }
+
+        return http.GetFromJsonAsync<JsonObject>(reqPath);
+
+    }
+
+    public static async Task<HtmlItem> MarkdownAsync(string path, string property)
+    {
+
+        var json = await GetStrapiEntry(path, property);
+        var data = json["data"];
+
+        if (data.GetType() == typeof(JsonArray)) {
+            data = data.AsArray().First().AsObject();
+        }
+
+        var content = data["attributes"][property].GetValue<string>();
+
+        var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+
+        var result = Markdig.Markdown.ToHtml(content, pipeline);
+        var div = Div(
+            result
+        );
+        return div;
+    }
     public static HtmlNode Container(params HtmlItem[] items) =>
         Div(items.With(@class("container-fluid")));
 
@@ -70,6 +136,15 @@ public static class Layout
                 ImgSrc("/img/discord.svg", @class("nav-img")),
                 "/discord"
             ))
+            // Li(AHref("/en/",
+            //     @class("accented-text"),
+            //     "[en]"
+            // ),
+            // "&nbsp;",
+            // AHref("/mk/",
+            //     @class("accented-text"),
+            //     "[mk]"
+            // ))
         );
 
         var NavBar = Nav(
@@ -81,13 +156,26 @@ public static class Layout
                             Span(@class("block w-6 h-0.5 bg-gray-600")),
                             Span(@class("block w-6 h-0.5 bg-gray-600")),
                             Span(@class("block w-6 h-0.5 bg-gray-600"))
-                        ) 
+                        )
                     ),
                     Ul(@class("flex flex-col space-y-4"),
                         NavItems()
                     )
                 )
             ));
+
+        var scripts = new List<HtmlItem> {
+
+        };
+
+        if (false) {
+            scripts.Add(
+                ScriptSrc("http://localhost:5173/@vite/client", type("module"))
+            );
+            scripts.Add(
+                ScriptSrc("http://localhost:5173/src/main.ts", type("module"))
+            );
+        }
 
         return Html(
             @class("dark"),
@@ -97,19 +185,8 @@ public static class Layout
                 LinkHref("/css/fonts.css"),
                 LinkHref("/css/output.css"),
                 LinkHref("/css/crt.css"),
-                Meta(name("viewport"), content("width=device-width, initial-scale=1.0")),
-                Script(@"
-                    setInterval(() => {
-                        const el = document.getElementById('krc');
-                        const randX = Math.floor(Math.random() * 100);
-                        const randY = Math.floor(Math.random() * 100);
-                        el.style.left = randX + '%';
-                        el.style.top = randY + '%';
-                        const randAngle = Math.floor(Math.random() * 360);
-                        const randScale = 0.3 + Math.floor(Math.random() * 1);
-                        el.style.transform = 'rotate(' + randAngle + 'deg) scale(' + randScale + ')';
-                    }, 100);
-                ")
+                LinkHref("/js/style.css"),
+                Meta(name("viewport"), content("width=device-width, initial-scale=1.0"))
             ),
             Body(
                 @class("bg-white dark:bg-secondary-1000 dark:text-white flex flex-col md:flex-row h-screen"),
@@ -121,7 +198,8 @@ public static class Layout
                         @class("text-center p-10"),
                         Markdown("content/footer.md")
                     )
-                ).ToArray())
+                ).ToArray()),
+                ScriptSrc("/js/site.js")
             )
         );
     }

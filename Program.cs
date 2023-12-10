@@ -1,15 +1,31 @@
+using System.Globalization;
+using BaseWeb;
+using CC.CSX.Web;
 using Microsoft.AspNetCore.Http.Extensions;
-
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Localization.Routing;
+using static BaseWeb.Layout;
+using static CC.CSX.HtmlAttributes;
+using static CC.CSX.HtmlElements;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]{
+        new CultureInfo("en"),
+        new CultureInfo("mk"),
+    };
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider());
+});
+
+builder.Services.AddRazorPages(options => {
+    options.Conventions.Add(new CultureTemplatePageRouteModelConvention());
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -18,13 +34,31 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions {
+    ServeUnknownFileTypes = true,
+});
+
+
 
 app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseRequestLocalization();
+
+app.MapControllers();
+
 app.MapRazorPages();
+
+
+app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
+    return new HtmlResult(WithLayout("Event",
+        Div(@class("p-4"),
+            await MarkdownAsync($"events/?filters[slug][$eq]={eventSlug}", "description")
+        )
+    ).ToString());
+});
 
 app.MapGet("/generate-ssg", async (IEnumerable<EndpointDataSource> endpointSources, HttpContext context) =>
 {

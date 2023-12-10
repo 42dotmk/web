@@ -3,6 +3,9 @@
 
 ----
 
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-8">
+
 ## A place for builders, and the curious
 
 Started with the idea that knowledge should be proliferated as much as possible, as often as possible and reach as many people as possible the goal of Base42 is to help enable people and encourage communities to be created, give them the tools to grow, get together and focus on achieving that goal, to build together, not alone.
@@ -10,6 +13,12 @@ Started with the idea that knowledge should be proliferated as much as possible,
 ## Not a coworking space, a <ins>**hackerspace**</ins>
 
 You go to an office to work, you come to a hackerspace to hack. It's most definitely not a coworking space. Coworking spaces promote commercial goals of proprietary code, proprietary information and so on. A hackerspace is the exact oposite of this - you come to a hackerspace to learn, explore, not just on your own but from your peers as well. You should be free to ask and be asked to share your knowledge and contribute to the common goal.
+
+  </div>
+  <div class="col-span-4">
+    <video autoplay loop src="/webms/sillyx75.webm"></video>
+  </div>
+</div>
 
 ## Events ## {#events}
 ----
