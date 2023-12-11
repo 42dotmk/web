@@ -137,6 +137,13 @@ public static class Layout
                 @class("accented-text nav-with-img"),
                 ImgSrc("/img/discord.svg", @class("nav-img")),
                 "/discord"
+            )),
+            Li(
+                @class("pt-2"),
+                AHref("https://github.com/42dotmk/web/",
+                @class("accented-text"),
+                target("_blank"),
+                "[View Source]"
             ))
             // Li(AHref("/en/",
             //     @class("accented-text"),
