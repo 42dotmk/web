@@ -53,11 +53,12 @@ app.MapRazorPages();
 
 
 app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
-    return new HtmlResult(WithLayout("Event",
+    var contentWithLayout = await WithLayout("Event",
         Div(@class("p-4"),
             await MarkdownAsync($"events/?filters[slug][$eq]={eventSlug}", "description")
         )
-    ).ToString());
+    );
+    return new HtmlResult(contentWithLayout.ToString());
 });
 
 app.MapGet("/generate-ssg", async (IEnumerable<EndpointDataSource> endpointSources, HttpContext context) =>
