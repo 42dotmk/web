@@ -9,7 +9,6 @@ export const darkMode = 'class';
 export const content = {
   files: ["../**/*.{cs,cshtml}"],
   extract: {
-    cshtml: getClassesFromCsharp,
     cs: getClassesFromCsharp,
   }
 };

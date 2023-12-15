@@ -144,3 +144,30 @@ summary {
 #calendar {
     filter: invert(1) hue-rotate(125deg);
 }
+
+input[type=text],
+input[type=email],
+input[type=password],
+textarea,
+select
+{
+    @apply w-full;
+}
+
+input[type=date], 
+input[type=time], 
+input[type=number], 
+input[type=tel],
+input[type=text],
+input[type=email],
+input[type=password],
+textarea,
+select
+{
+    @apply px-4 py-2 bg-secondary-1000 text-white border transition-all outline-none focus:border-primary border-secondary-400 rounded-md;
+}
+
+select
+{
+    @apply py-3 ;
+}

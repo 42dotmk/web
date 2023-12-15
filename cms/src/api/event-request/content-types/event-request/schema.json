@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_requests",
+  "info": {
+    "singularName": "event-request",
+    "pluralName": "event-requests",
+    "displayName": "Event Request",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "organizingEntity": {
+      "type": "string"
+    },
+    "initiatorName": {
+      "type": "string"
+    },
+    "initiatorEmail": {
+      "type": "string"
+    },
+    "initiatorPhoneNumber": {
+      "type": "string"
+    },
+    "organization": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string"
+    },
+    "eventName": {
+      "type": "string"
+    },
+    "eventTheme": {
+      "type": "string"
+    },
+    "eventPurpose": {
+      "type": "string"
+    },
+    "eventDate": {
+      "type": "date"
+    },
+    "eventStart": {
+      "type": "time"
+    },
+    "eventEnd": {
+      "type": "time"
+    },
+    "eventAgenda": {
+      "type": "richtext"
+    },
+    "expectedGuests": {
+      "type": "integer"
+    },
+    "physicalPresence": {
+      "type": "boolean"
+    }
+  }
+}
