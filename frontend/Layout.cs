@@ -35,6 +35,12 @@ public static class Layout
         items.With(@class("text-1xl text-regular m-0"))
     );
 
+    public static HtmlItem? If(bool expr, HtmlItem item) => 
+        !expr ? null : item;
+
+    public static HtmlItem? If(this HtmlItem item, bool expr) => 
+        !expr ? null : item;
+
     public static HtmlItem Markdown(string path)
     {
         var content = File.ReadAllText(path);
@@ -47,9 +53,7 @@ public static class Layout
         return div;
     }
 
-
-
-    public static Task<JsonObject?> GetStrapiEntry(string path, string property) {
+    public static Task<JsonObject?> GetStrapiEntry(string path) {
         var http = new HttpClient()
         {
             BaseAddress = new Uri(Constants.StrapiUrl)
@@ -61,18 +65,21 @@ public static class Layout
             locale = "en";
         }
         var sep = path.Contains("?") ? "&" : "?";
-        var reqPath = $"{path}{sep}locale={locale}";
+        var reqPath = $"{path}{sep}locale={locale}&populate=*";
 
         Console.WriteLine($"Requesting {reqPath}");
 
         return http.GetFromJsonAsync<JsonObject>(reqPath);
-
     }
 
     public static async Task<HtmlItem> MarkdownAsync(string path, string property)
     {
+        var json = await GetStrapiEntry(path);
+        return await MarkdownAsync(json, property);
+    }
 
-        var json = await GetStrapiEntry(path, property);
+    public static async Task<HtmlItem> MarkdownAsync(JsonObject json, string property)
+    {
         var data = json["data"];
 
         if (data.GetType() == typeof(JsonArray)) {
@@ -89,6 +96,7 @@ public static class Layout
         );
         return div;
     }
+
     public static HtmlNode Container(params HtmlItem[] items) =>
         Div(items.With(@class("container-fluid")));
 

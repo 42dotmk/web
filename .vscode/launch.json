@@ -8,9 +8,9 @@
       "name": ".NET Core Launch (console)",
       "type": "coreclr",
       "request": "launch",
-      "program": "${workspaceFolder}/bin/Debug/net8.0/BaseWeb.dll",
+      "program": "${workspaceFolder}/frontend/bin/Debug/net8.0/BaseWeb.dll",
       "args": [],
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/frontend",
       "stopAtEntry": false,
       "console": "internalConsole"
     }

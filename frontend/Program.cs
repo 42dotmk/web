@@ -53,9 +53,21 @@ app.MapRazorPages();
 
 
 app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
-    var contentWithLayout = await WithLayout("Event",
+    var evt = await GetStrapiEntry($"events/?filters[slug][$eq]={eventSlug}");
+    var url = evt["data"]?[0]?["attributes"]?["promo"]?["data"]?["attributes"]?["url"]?.ToString();
+    var title = evt["data"]?[0]?["attributes"]?["title"].ToString();
+    var fullUrl = url is null ? null : $"{Constants.StrapiUrlBase}{url.Substring(1)}";
+    Console.WriteLine(fullUrl);
+    var contentWithLayout = await WithLayout(title,
         Div(@class("p-4"),
-            await MarkdownAsync($"events/?filters[slug][$eq]={eventSlug}", "description")
+            Div(style("display: flex; justify-content: center;"),
+                If(fullUrl is not null, 
+                    Img(src(fullUrl), @class("w-1/2"))
+                )
+            ),
+            H1(title),
+            Hr(),
+            await MarkdownAsync(evt, "description")
         )
     );
     return new HtmlResult(contentWithLayout.ToString());
@@ -85,10 +97,6 @@ app.MapGet("/generate-ssg", async (IEnumerable<EndpointDataSource> endpointSourc
         fileWrite.Close();
     }
 });
-
-// app.MapGet("/", () => {
-//     return "Hello fff!";
-// });
 
 if (args.Contains("-ssg")) {
     app.Start();
