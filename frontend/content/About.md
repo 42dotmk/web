@@ -30,7 +30,7 @@ You can see our agenda for the week below:
 Or, book your own event:
 
 <center style="margin-top: 50px; margin-bottom: 50px;">
-  <a  onclick="alert('Coming soon!')" href="#" class="cta-button-secondary mt-10">
+  <a href="/book" class="cta-button-secondary mt-10">
     ./book-event.sh
   </a>
 </center>
