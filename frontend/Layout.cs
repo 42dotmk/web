@@ -5,6 +5,7 @@ using static CC.CSX.HtmlAttributes;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using System.Globalization;
+using static BaseWeb.CSXUtils;
 
 namespace BaseWeb;
 
@@ -13,7 +14,6 @@ public class CultureTemplatePageRouteModelConvention : IPageRouteModelConvention
     public void Apply(PageRouteModel model)
     {
         var selectorCount = model.Selectors.Count;
-
         for (var i = 0; i < selectorCount; i++)
         {
             var selector = model.Selectors[i];
@@ -34,68 +34,6 @@ public static class Layout
     public static HtmlItem Jumbo(params HtmlItem[] items) => H1(
         items.With(@class("text-1xl text-regular m-0"))
     );
-
-    public static HtmlItem? If(bool expr, HtmlItem item) => 
-        !expr ? null : item;
-
-    public static HtmlItem? If(this HtmlItem item, bool expr) => 
-        !expr ? null : item;
-
-    public static HtmlItem Markdown(string path)
-    {
-        var content = File.ReadAllText(path);
-        var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-
-        var result = Markdig.Markdown.ToHtml(content, pipeline);
-        var div = Div(
-            result
-        );
-        return div;
-    }
-
-    public static Task<JsonObject?> GetStrapiEntry(string path) {
-        var http = new HttpClient()
-        {
-            BaseAddress = new Uri(Constants.StrapiUrl)
-        };
-
-        var locale = CultureInfo.CurrentCulture.Name;
-        if (string.IsNullOrEmpty(locale))
-        {
-            locale = "en";
-        }
-        var sep = path.Contains("?") ? "&" : "?";
-        var reqPath = $"{path}{sep}locale={locale}&populate=*";
-
-        Console.WriteLine($"Requesting {reqPath}");
-
-        return http.GetFromJsonAsync<JsonObject>(reqPath);
-    }
-
-    public static async Task<HtmlItem> MarkdownAsync(string path, string property)
-    {
-        var json = await GetStrapiEntry(path);
-        return await MarkdownAsync(json, property);
-    }
-
-    public static async Task<HtmlItem> MarkdownAsync(JsonObject json, string property)
-    {
-        var data = json["data"];
-
-        if (data.GetType() == typeof(JsonArray)) {
-            data = data.AsArray().First().AsObject();
-        }
-
-        var content = data["attributes"][property].GetValue<string>();
-
-        var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-
-        var result = Markdig.Markdown.ToHtml(content, pipeline);
-        var div = Div(
-            result
-        );
-        return div;
-    }
 
     public static HtmlNode Container(params HtmlItem[] items) =>
         Div(items.With(@class("container-fluid")));

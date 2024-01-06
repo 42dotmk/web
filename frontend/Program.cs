@@ -1,9 +1,12 @@
 using System.Globalization;
 using BaseWeb;
+using CC.CSX;
 using CC.CSX.Web;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Localization.Routing;
 using static BaseWeb.Layout;
+using static BaseWeb.Components;
+using static BaseWeb.CSXUtils;
 using static CC.CSX.HtmlAttributes;
 using static CC.CSX.HtmlElements;
 
@@ -51,11 +54,10 @@ app.MapControllers();
 
 app.MapRazorPages();
 
-
 app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
     var evt = await GetStrapiEntry($"events/?filters[slug][$eq]={eventSlug}");
-    var url = evt["data"]?[0]?["attributes"]?["promo"]?["data"]?["attributes"]?["url"]?.ToString();
-    var title = evt["data"]?[0]?["attributes"]?["title"].ToString();
+    var url = evt["data"]?[0]?["promo"]?["data"]?["url"]?.ToString();
+    var title = evt["data"]?[0]?["title"].ToString();
     var fullUrl = url is null ? null : $"{Constants.StrapiUrlBase}{url.Substring(1)}";
     Console.WriteLine(fullUrl);
     var contentWithLayout = await WithLayout(title,
@@ -71,6 +73,47 @@ app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
         )
     );
     return new HtmlResult(contentWithLayout.ToString());
+});
+
+app.MapGet("/events/", async (HttpContext ctx) => {
+    var hasPage = int.TryParse(ctx.Request.Query["page"].ToString(), out int page);
+    var pagination = hasPage ? $"&pagination[page]={page}" : "";
+
+    var tag = ctx.Request.Query["tag"].ToString();
+    var tagFilter = tag is not null && tag != "" ? $"&filters[tags][tagName][$eq]={tag}" : "";
+
+    var evt = await GetStrapiEntry($"events/?sort=start:desc" + pagination + tagFilter);
+    var pageCount = evt?["meta"]?["pagination"]?["pageCount"]?.GetValue<int>();
+    var cards = evt?["data"]?.AsArray()?.Select(e => EventCard(e.AsObject()));
+    var hasElements = cards?.Any() ?? false;
+    var contentWithLayout = await WithLayout("Events",
+        Div(@class("p-4"),
+            H1("Events"),
+            Hr(),
+            Div(
+                [
+                    @class("grid auto-rows-fr grid-flow-row gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"),
+                    .. evt?["data"]?.AsArray()?.Select(e => EventCard(e.AsObject())),
+                    If(!hasElements,
+                        Div(@class("text-center p-10"),
+                            Div("No events yet")
+                        )
+                    )
+                ]
+            ),
+            Div(@class("text-center p-10"),
+                If(hasPage && page > 1, 
+                    AHref($"/events/?page={page - 1}", "Previous", @class("accented-text mr-2"))
+                ),
+                If(
+                    page < pageCount,
+                    AHref($"/events/?page={page + 1}", "Next", @class("accented-text ml-2"))
+                )
+            )
+        )
+    );
+    
+    return new HtmlResult(contentWithLayout?.ToString());
 });
 
 app.MapGet("/generate-ssg", async (IEnumerable<EndpointDataSource> endpointSources, HttpContext context) =>

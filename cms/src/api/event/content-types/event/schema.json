@@ -79,6 +79,25 @@
           "localized": true
         }
       }
+    },
+    "summary": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "tags": {
+      "displayName": "Tags",
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "event-data.tags"
     }
   }
 }

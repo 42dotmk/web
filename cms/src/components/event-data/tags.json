@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_event_data_tags",
+  "info": {
+    "displayName": "Tags",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "tagName": {
+      "type": "string"
+    }
+  }
+}
