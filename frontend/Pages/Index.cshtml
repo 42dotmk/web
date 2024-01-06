@@ -4,6 +4,7 @@
 @using static BaseWeb.HtmlItemExtensions;
 @using static BaseWeb.Layout;
 @using static BaseWeb.CSXUtils;
+@using static BaseWeb.Components;
 
 @{
     ViewData["Title"] = "Base42";
@@ -27,16 +28,6 @@
             Div(id("krc"))
         )
     );
-
-    var CtaButton = (string text, string hrefAttr, string type) =>
-        A(
-            href(hrefAttr),
-            (type == "primary" 
-                ? @class("cta-button-primary")
-                : @class("cta-button-secondary")
-            ),
-            text
-        );
 
     var Hero = Div(
         id("hero"),

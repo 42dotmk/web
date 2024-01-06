@@ -98,6 +98,14 @@
         }
       },
       "component": "event-data.tags"
+    },
+    "registerLink": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }

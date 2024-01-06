@@ -55,11 +55,16 @@ app.MapControllers();
 app.MapRazorPages();
 
 app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
-    var evt = await GetStrapiEntry($"events/?filters[slug][$eq]={eventSlug}");
-    var url = evt["data"]?[0]?["promo"]?["data"]?["url"]?.ToString();
-    var title = evt["data"]?[0]?["title"].ToString();
+    var res = await GetStrapiEntry($"events/?filters[slug][$eq]={eventSlug}");
+    var evt = res?["data"]?[0];
+    var url = evt?["promo"]?["data"]?["url"]?.ToString();
+    var title = evt?["title"].ToString();
     var fullUrl = url is null ? null : $"{Constants.StrapiUrlBase}{url.Substring(1)}";
-    Console.WriteLine(fullUrl);
+    var hasStart =  DateTime.TryParse(evt?["start"]?.ToString(), null, DateTimeStyles.AssumeLocal, out var start);
+
+    var isUpcoming = hasStart && start > DateTime.Now;
+    var registerLink = evt?["registerLink"]?.ToString();
+
     var contentWithLayout = await WithLayout(title,
         Div(@class("p-4"),
             Div(style("display: flex; justify-content: center;"),
@@ -69,7 +74,11 @@ app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
             ),
             H1(title),
             Hr(),
-            await MarkdownAsync(evt, "description")
+            P("Start: ", start.ToString(Constants.EventDateFormat)),
+            Hr(),
+            RenderMarkdown(evt["description"].ToString()),
+            If(isUpcoming && registerLink is not null, RegisterSection(registerLink)),
+            LocationSection()
         )
     );
     return new HtmlResult(contentWithLayout.ToString());
@@ -77,6 +86,10 @@ app.MapGet("/events/{eventSlug}", async (string eventSlug) => {
 
 app.MapGet("/events/", async (HttpContext ctx) => {
     var hasPage = int.TryParse(ctx.Request.Query["page"].ToString(), out int page);
+    if (!hasPage)  {
+        page = 1;
+    }
+
     var pagination = hasPage ? $"&pagination[page]={page}" : "";
 
     var tag = ctx.Request.Query["tag"].ToString();
@@ -89,6 +102,9 @@ app.MapGet("/events/", async (HttpContext ctx) => {
     var contentWithLayout = await WithLayout("Events",
         Div(@class("p-4"),
             H1("Events"),
+            P("You browse through all our past and upcoming events here."),
+            P("Want to book your own event ?"),
+            AHref("/book", "Fill out this form", @class("accented-text")),
             Hr(),
             Div(
                 [
