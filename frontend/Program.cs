@@ -103,7 +103,7 @@ app.MapGet("/events/", async (HttpContext ctx) => {
         Div(@class("p-4"),
             H1("Events"),
             P("You browse through all our past and upcoming events here."),
-            P("Want to book your own event ?"),
+            P("Want to book your own event?"),
             AHref("/book", "Fill out this form", @class("accented-text")),
             Hr(),
             Div(

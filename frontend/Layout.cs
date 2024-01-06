@@ -141,7 +141,8 @@ public static class Layout
                 LinkHref("/css/output.css"),
                 LinkHref("/css/crt.css"),
                 LinkHref("/js/style.css"),
-                Meta(name("viewport"), content("width=device-width, initial-scale=1.0"))
+                Meta(name("viewport"), content("width=device-width, initial-scale=1.0")),
+                Link(rel("icon"), href("/img/favicon.svg"))
             ),
             Body(
                 @class("bg-white dark:bg-secondary-1000 dark:text-white flex flex-col md:flex-row h-screen"),
