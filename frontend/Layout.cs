@@ -105,6 +105,7 @@ public static class Layout
         var NavBar = Nav(
             Div(@id("mobile-menu"), @class("bg-black bg-opacity-30 md:h-full p-4 border-r-secondary-500 border-r-2"),
                 Details(
+                    id("menu"),
                     ("open", "true"),
                     Summary(
                         Div(@class("space-y-2 cursor-pointer"),
