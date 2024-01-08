@@ -49,7 +49,7 @@ public static class Layout
     {
         var navItems = new List<NavItem>() {
             new() { Text = "./about.html", Url = "/#about", Icon = "/img/icons/html.svg" },
-            new() { Text = "./events.html", Url = "/#events", Icon = "/img/icons/html.svg" },
+            new() { Text = "./events.html", Url = "/events", Icon = "/img/icons/html.svg" },
             new() { Text = "./projects.html", Url = "/#projects", Icon = "/img/icons/html.svg" },
             new() { Text = "./contact.html", Url = "/#contact", Icon = "/img/icons/html.svg" },
         };
