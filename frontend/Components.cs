@@ -45,7 +45,7 @@ public static class Components
                 P(@class("text-gray-300 text-base"), evt?["summary"]?.ToString()),
                 If(isUpcoming && registerLink is not null, Div(
                     @class("flex flex-wrap justify-center"),
-                    CtaButton("./register.sh", "https://www.meetup.com/awsugmkd/events/298150894/", "secondary", "full")
+                    CtaButton("./register.sh", registerLink, "secondary", "full")
                 ))
             ),
             Div(
