@@ -93,7 +93,7 @@ public static class Components
         Hr()
     );
 
-    public static HtmlNode CtaButton (string text, string hrefAttr, string type, string _target="self", string classes="") =>
+    public static HtmlNode CtaButton (string text, string hrefAttr, string type, string _target="_self", string classes="") =>
         A(
             href(hrefAttr),
             target(_target),
