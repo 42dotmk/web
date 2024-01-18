@@ -106,6 +106,14 @@
         }
       },
       "type": "string"
+    },
+    "calendarUrl": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }
