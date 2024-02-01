@@ -18,15 +18,14 @@ const formToJsonMap = {
 
 export default {
   async submit(ctx: any, next) {
-    const eventRequest = Object.keys(ctx.request.body).reduce((acc, key) => {
-      const value = ctx.request.body[key];
+    const eventRequest = Object.keys(ctx.request.body.data).reduce((acc, key) => {
+      const value = ctx.request.body.data[key];
       const mappedKey = formToJsonMap[key];
       if (mappedKey) {
         acc[mappedKey] = value;
       }
       return acc;
     }, {} as any);
-
 
     eventRequest.physicalPresence = eventRequest.physicalPresence === "yes";
     eventRequest.eventStart += ":00";
