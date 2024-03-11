@@ -7,10 +7,9 @@ const getClassesFromCsharp = (content) => {
 /** @type {import('tailwindcss').Config} */
 export const darkMode = 'class';
 export const content = {
-  files: ["../**/*.{cs,cshtml}"],
-  extract: {
-    cs: getClassesFromCsharp,
-  }
+  files: [
+    "../**/*.{cs,cshtml,ts}"
+  ],
 };
 export const theme = {
   extend: {

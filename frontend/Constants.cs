@@ -1,7 +1,7 @@
 namespace BaseWeb;
 
 public static class Constants {
-  public static string StrapiUrl = Environment.GetEnvironmentVariable("STRAPI_URL") ?? "http://localhost:1337/api/";
+  public static string StrapiUrl = Environment.GetEnvironmentVariable("STRAPI_URL") ?? "https://cms.42.mk/api/";
 
   public static string StrapiUrlBase = StrapiUrl.Substring(0, StrapiUrl.Length - 4);
 
