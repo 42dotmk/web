@@ -23,13 +23,15 @@ builder.Services.AddOutputCache(options =>
         builder.Expire(TimeSpan.FromMinutes(60)));
 });
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
+    Console.WriteLine("Caching is enabled.");
     app.UseExceptionHandler("/Error");
     app.UseHsts();
-} else {
     app.UseOutputCache();
 }
 
