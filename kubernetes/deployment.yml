@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: base42-web
+  namespace: base42-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: base42-web
+  template:
+    metadata:
+      labels:
+        app: base42-web
+    spec:
+      containers:
+        - name: base42-web
+          image: ghcr.io/42dotmk/42dotmk-frontend:latest
+          env:
+            - name: STRAPI_URL
+              value: "https://cms.42.mk/api/"
+          ports:
+          - name: http
+            containerPort: 8080

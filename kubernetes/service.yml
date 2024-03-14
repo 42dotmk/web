@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: base42-web
+  namespace: base42-web
+  labels:
+    app: base42-web
+spec:
+  selector:
+    app: base42-web
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
