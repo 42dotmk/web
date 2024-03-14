@@ -15,7 +15,7 @@ public static partial class EventModule
         var res = await GetStrapiEntry($"events/?filters[slug][$eq]={eventSlug}");
         var evt = res?["data"]?[0];
         var url = evt?["promo"]?["url"]?.ToString();
-        var fullUrl = url is null ? null : $"{Constants.StrapiUrlBase}{url.Substring(1)}";
+        var fullUrl = url is null ? null : $"{Constants.StrapiUrlBase}{url}";
         var title = evt?["title"].ToString();
         var calendarUrl = evt?["calendarUrl"]?.ToString();
         var hasStart =  DateTime.TryParse(evt?["start"]?.ToString(), null, DateTimeStyles.AssumeLocal, out var start);

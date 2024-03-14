@@ -13,6 +13,14 @@ public static class CSXUtils
     public static HtmlItem? If(this HtmlItem item, bool expr) => 
         !expr ? null : item;
 
+
+    public static Task<JsonObject?> GetDiscordWidget() {
+        var http = new HttpClient();
+        return http.GetFromJsonAsync<JsonObject>(Constants.DiscordWidgetUrl);
+    }
+
+        
+
     public static string RenderMarkdown(string content)
     {
         var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();

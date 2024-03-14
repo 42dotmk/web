@@ -129,7 +129,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   pointer-events: none;
   position: absolute;
   right: 0;
-  top: 0
+  top: 0;
+  transition: all 0.5s ease-in-out;
 }
 
 #wrapper:afte1r {
@@ -143,11 +144,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   z-index: 32;
 }
 
+#wrapper:after {
+  background-size: cover;
+}
+
 #wrapper:before {
   -webkit-animation: fadeIn 2s linear;
   animation: fadeIn 2s linear; 
-  opacity: .3;
-  background: url('/img/photo/bg.webp');
+  /* background: url('/img/photo/bg.webp'); */
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out !important;
   filter: blur(5px);
   background-size: cover;
   background-position: 50% 40%;

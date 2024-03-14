@@ -7,5 +7,6 @@ public static partial class HomeModule
 
       events.MapGet("/", HomePage);
       events.MapGet("/book", BookEvent);
+      events.MapGet("/discord", Discord);
     }
 }

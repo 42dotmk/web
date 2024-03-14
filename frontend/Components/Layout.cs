@@ -27,7 +27,11 @@ public static class Layout
                 LinkHref("/css/crt.css"),
                 LinkHref("/js/style.css"),
                 Meta(name("viewport"), content("width=device-width, initial-scale=1.0")),
-                Link(rel("icon"), href("/img/favicon.svg"))
+                Link(rel("icon"), href("/img/favicon.svg")),
+                Script($@"
+                    window.CMS_URL = '{Constants.StrapiUrlBase}';
+                    window.CMS_API_URL = '{Constants.StrapiUrlBase}/api';
+                ")
             ),
             Body(
                 @class("bg-white dark:bg-secondary-1000 dark:text-white flex flex-col md:flex-row h-screen"),
