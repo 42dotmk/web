@@ -855,6 +855,14 @@ video {
   z-index: -10;
 }
 
+.col-span-12 {
+  grid-column: span 12 / span 12;
+}
+
+.col-span-8 {
+  grid-column: span 8 / span 8;
+}
+
 .m-0 {
   margin: 0px;
 }
@@ -888,12 +896,12 @@ video {
   margin-left: 1rem;
 }
 
-.mr-2 {
-  margin-right: 0.5rem;
+.mr-1 {
+  margin-right: 0.25rem;
 }
 
-.mr-4 {
-  margin-right: 1rem;
+.mr-2 {
+  margin-right: 0.5rem;
 }
 
 .mt-10 {
@@ -902,10 +910,6 @@ video {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.mr-1 {
-  margin-right: 0.25rem;
 }
 
 .block {
@@ -1012,6 +1016,10 @@ video {
   grid-auto-rows: minmax(0, 1fr);
 }
 
+.grid-cols-12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -1026,6 +1034,10 @@ video {
 
 .justify-center {
   justify-content: center;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 
 .gap-8 {
@@ -1418,7 +1430,7 @@ section, nav {
   background: #14200f;
 }
 
-.cta-button-primary, .cta-button-secondary {
+.cta-button {
   margin-bottom: 1rem;
   margin-right: 1rem;
   --tw-bg-opacity: 1;
@@ -1441,12 +1453,12 @@ section, nav {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cta-button-primary:hover, .cta-button-secondary:hover {
+.cta-button:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(250 225 39 / var(--tw-bg-opacity));
 }
 
-.cta-button-secondary {
+.cta-button.secondary {
   border-width: 2px;
   --tw-border-opacity: 1;
   border-color: rgb(8 208 210 / var(--tw-border-opacity));
@@ -1455,12 +1467,33 @@ section, nav {
   color: rgb(8 208 210 / var(--tw-text-opacity));
 }
 
-.cta-button-secondary:hover {
+.cta-button.secondary:hover {
   --tw-border-opacity: 1;
   border-color: rgb(250 225 39 / var(--tw-border-opacity));
   background-color: transparent;
   --tw-text-opacity: 1;
   color: rgb(250 225 39 / var(--tw-text-opacity));
+}
+
+.discord {
+  border-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(114 137 218 / var(--tw-border-opacity));
+  background-color: transparent;
+  --tw-text-opacity: 1;
+  color: rgb(114 137 218 / var(--tw-text-opacity));
+}
+
+.discord:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(250 225 39 / var(--tw-border-opacity));
+  background-color: transparent;
+  --tw-text-opacity: 1;
+  color: rgb(250 225 39 / var(--tw-text-opacity));
+}
+
+.discord-img {
+  filter: saturate(0) brightness(1000);
 }
 
 .facility {
@@ -1660,6 +1693,14 @@ select {
 }
 
 @media (min-width: 768px) {
+  .md\:col-span-4 {
+    grid-column: span 4 / span 4;
+  }
+
+  .md\:col-span-8 {
+    grid-column: span 8 / span 8;
+  }
+
   .md\:block {
     display: block;
   }

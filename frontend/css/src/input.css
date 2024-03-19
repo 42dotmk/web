@@ -59,7 +59,7 @@ section, nav {
     background: #14200f;
 }
 
-.cta-button-primary, .cta-button-secondary {
+.cta-button {
     @apply decoration-0
     bg-secondary-400
     uppercase
@@ -76,7 +76,7 @@ section, nav {
     ease-in-out;
 }
 
-.cta-button-secondary {
+.cta-button.secondary {
     @apply
     bg-transparent
     border-2
@@ -87,6 +87,20 @@ section, nav {
     text-secondary-500;
 }
 
+.discord {
+    @apply
+    bg-transparent
+    border-2
+    border-discord
+    hover:bg-transparent
+    hover:border-primary
+    hover:text-primary
+    text-discord;
+}
+
+.discord-img {
+    filter: saturate(0) brightness(1000);
+ }
 
 .facility {
     @apply flex justify-center items-center flex-col;

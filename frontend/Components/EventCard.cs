@@ -19,7 +19,7 @@ public static partial class Components
         var hasStart =  DateTime.TryParse(evt?["start"]?.ToString(), null, DateTimeStyles.AssumeLocal, out var start);
 
         var url = evt?["promo"]?["url"]?.ToString();
-        var fullUrl = url is null ? null : $"{Constants.StrapiUrlBase}{url.Substring(1)}";
+        var fullUrl = url is null ? null : $"{Constants.StrapiUrlBase}{url}";
 
         var registerLink = evt?["registerLink"]?.ToString();
         var isUpcoming = hasStart && start > DateTime.Now;

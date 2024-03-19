@@ -4,14 +4,11 @@ namespace BaseWeb;
 
 public static partial class Components
 {
-    public static HtmlNode CtaButton(string text, string hrefAttr, string type, string _target = "_self",
-        string classes = "") =>
+    public static HtmlNode CtaButton(HtmlNode text, string hrefAttr, string type, string _target = "_self") =>
         HtmlElements.A(
             HtmlAttributes.href(hrefAttr),
             HtmlAttributes.target(_target),
-            type == "primary"
-                ? HtmlAttributes.@class($"cta-button-primary {classes}")
-                : HtmlAttributes.@class($"cta-button-secondary {classes}"),
+            HtmlAttributes.@class("cta-button " + type),
             text
         );
 }

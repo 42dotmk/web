@@ -66,7 +66,6 @@ const loadRandomImage = async (images: GalleryEntry[], el: HTMLElement, iter = 0
         opacity: 0.3;
       }
     `;
-    setRandomText();
 
     loadRandomImage(images, el, iter+1, url);
   } catch (err) {
@@ -88,6 +87,11 @@ const runImageRandomizer = () => {
 }
 
 
+const runTextRandomizer = () => {
+  setInterval(setRandomText, 300);
+};
+
 export const runHero = () => {
   runImageRandomizer();
+  runTextRandomizer();
 }

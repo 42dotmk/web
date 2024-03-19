@@ -47,9 +47,11 @@ public static partial class HomeModule
                 H1(
                     @class("mt-10 text-lg md:text-4xl  mb-20 font-bold")
                 ),
-                Div(
+                A(
+                  href(Constants.DiscordInviteUrl),
+                  target("_blank"),
                   @class("flex justify-center items-center flex-wrap mb-4"),
-                  ImgSrc("/img/discord.svg", @class("nav-img mr-1 fill-white")),
+                  ImgSrc("/img/discord.svg", @class("nav-img mr-1 fill-white discord-img")),
                   $"{present}/250+ online now",
                   Div(
                     [
@@ -63,7 +65,14 @@ public static partial class HomeModule
                 ),
                 Div(
                     @class("flex justify-center items-center flex-wrap"),
-                    CtaButton("./DISCORD.sh", "#about", "secondary"),
+                    CtaButton(
+                      Span(
+                        "./DISCORD.sh"
+                      ),
+                      Constants.DiscordInviteUrl, 
+                      "discord", 
+                      "_blank"
+                    ),
                     CtaButton("./build.sh", "#about", "secondary")
                 )
             )

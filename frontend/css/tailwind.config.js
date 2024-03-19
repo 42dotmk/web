@@ -11,9 +11,23 @@ export const content = {
     "../**/*.{cs,cshtml,ts}"
   ],
 };
+
+export const safelist = [
+  "md:col-span-4",
+  "md:col-span-8",
+  "col-span-12",
+  "grid",
+  "col-span-12",
+  "col-span-8",
+  "md:col-span-8",
+  "grid-cols-12",
+  "gap-4"
+]
+
 export const theme = {
   extend: {
     colors: {
+      discord: "#7289da",
       primary: "#fae127",
       secondary: {
         '50': '#ecfffd',

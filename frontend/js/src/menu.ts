@@ -5,5 +5,12 @@ export const initMenu = () => {
     return;
   }
 
+  document.querySelectorAll(".menu-item").forEach((e) => {
+    const element = e as HTMLElement;
+    element.onclick = () => {
+      el.open = false;
+    };
+  });
+
   el.open = window.innerWidth > 768;
 };

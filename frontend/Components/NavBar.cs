@@ -27,43 +27,43 @@ public static partial class Components
       Li(AHref("/", "/home")),
       Fragment(
         navItems.Select(item => Li(AHref(item.Url,
-          @class("ml-4 nav-with-img"),
+          @class("menu-item ml-4 nav-with-img"),
           (item.Icon != null ? ImgSrc(item.Icon, @class("nav-img fill-white"), style("transform: scale(1.5)")) : Fragment()),
           item.Text
         ))).ToArray()
       ),
       Li(AHref("https://blog.42.mk",
         target("_blank"),
-        @class("accented-text nav-with-img"),
+        @class("menu-item accented-text nav-with-img"),
         ImgSrc("/img/icons/notebook.svg", @class("nav-img"), style("transform: scale(1.5)")),
         "/blog.md"
       )),
       Li(AHref("https://wiki.42.mk",
         target("_blank"),
-        @class("accented-text nav-with-img"),
+        @class("menu-item accented-text nav-with-img"),
         ImgSrc("/img/icons/globe.svg", @class("nav-img"), style("transform: scale(1.5)")),
         "/wiki.md"
       )),
-      Li(AHref("https://discord.gg/424xxTZVYX",
+      Li(AHref(Constants.DiscordInviteUrl,
         target("_blank"),
-        @class("accented-text nav-with-img"),
+        @class("menu-item accented-text nav-with-img"),
         ImgSrc("/img/discord.svg", @class("nav-img")),
         "/discord"
       )),
       Li(
         @class("pt-2"),
         AHref("https://github.com/42dotmk/web/",
-        @class("accented-text"),
+        @class("menu-item accented-text"),
         target("_blank"),
         "[View Source]"
       ))
       // Li(AHref("/en/",
-      //   @class("accented-text"),
+      //   @class("menu-item accented-text"),
       //   "[en]"
       // ),
       // "&nbsp;",
       // AHref("/mk/",
-      //   @class("accented-text"),
+      //   @class("menu-item accented-text"),
       //   "[mk]"
       // ))
     );
