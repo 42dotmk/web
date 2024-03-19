@@ -17,11 +17,11 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.RequestCultureProviders.Insert(0, new RouteDataRequestCultureProvider());
 });
 
-builder.Services.AddOutputCache(options =>
-{
-    options.AddBasePolicy(builder => 
-        builder.Expire(TimeSpan.FromMinutes(60)));
-});
+// builder.Services.AddOutputCache(options =>
+// {
+//     options.AddBasePolicy(builder => 
+//         builder.Expire(TimeSpan.FromMinutes(60)));
+// });
 
 builder.Services.AddCors();
 
