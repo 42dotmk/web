@@ -32,7 +32,7 @@ if (!app.Environment.IsDevelopment())
     Console.WriteLine("Caching is enabled.");
     app.UseExceptionHandler("/Error");
     app.UseHsts();
-    app.UseOutputCache();
+    // app.UseOutputCache();
 }
 
 app.UseHttpsRedirection();
