@@ -30,10 +30,26 @@ public static partial class EventModule
         var contentWithLayout = await WithLayout("Events",
             Div(@class("p-4"),
                 H1("Events"),
-                P("You browse through all our past and upcoming events here."),
-                P("Want to book your own event?"),
-                AHref("/book", "Fill out this form", @class("accented-text")),
+                H2("Calendar"),
                 Hr(),
+                Details(
+                    Summary("> Click to expand the calendar", @class("cursor-pointer accented-text text-primary")),
+                    IFrame(
+                        id("calendar"),
+                        src("https://calendar.google.com/calendar/embed?height=600&wkst=2&bgcolor=%23ffffff&ctz=Europe%2FSkopje&showTz=1&showCalendars=1&showTabs=1&showPrint=1&showDate=1&showNav=1&showTitle=0&mode=WEEK&src=YmFzZTQybWtAZ21haWwuY29t"),
+                        style("border:solid 1px #777; "),
+                        width("100%"),
+                        height("600")
+                    )
+                ),
+                P("or maybe you want to organize an event?"),
+                Div(
+                    @class("flex justify-center"),
+                    CtaButton("Book an Event", "/book", "secondary")
+                ),
+                Hr(),
+                H2("Past Events"),
+                P("You browse through all our past and upcoming events here."),
                 Div(
                     [
                         @class("grid auto-rows-fr grid-flow-row gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"),
