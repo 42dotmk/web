@@ -6,8 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var supportedCultures = new[]{
     new CultureInfo("en"),
-    new CultureInfo("mk"),
-    new CultureInfo("fr"),
+    // new CultureInfo("mk"),
+    // new CultureInfo("fr"),
 };
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
