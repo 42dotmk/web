@@ -31,7 +31,21 @@ public static class Layout
                 Script($@"
                     window.CMS_URL = '{Constants.StrapiUrlBase}';
                     window.CMS_API_URL = '{Constants.StrapiUrlBase}/api';
-                ")
+                "),
+                Script(
+                    @async(""),
+                    @type("text/javascript"),
+                    @src("https://www.googletagmanager.com/gtag/js?id=G-0R641RVCHQ")
+                ),
+                Script(
+                    @type("text/javascript"),
+                    $@"
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){{dataLayer.push(arguments);}}
+                        gtag('js', new Date());
+                        gtag('config', 'G-0R641RVCHQ');
+                    "
+                )
             ),
             Body(
                 @class("bg-white dark:bg-secondary-1000 dark:text-white flex flex-col md:flex-row h-screen"),
