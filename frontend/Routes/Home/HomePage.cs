@@ -52,7 +52,7 @@ public static partial class HomeModule
                   target("_blank"),
                   @class("flex justify-center items-center flex-wrap mb-4"),
                   ImgSrc("/img/discord.svg", @class("nav-img mr-1 fill-white discord-img")),
-                  $"{present}/300+ online now",
+                  $"{present}/600+ online now",
                   Div(
                     [
                       @class("p-2 flex -space-x-1 overflow-hidden"),
