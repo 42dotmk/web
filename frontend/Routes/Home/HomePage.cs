@@ -32,6 +32,9 @@ public static partial class HomeModule
     var present = wgt["presence_count"];
     var rnd = new Random();
     var members = wgt["members"].AsArray().OrderBy(x => rnd.Next()).Take(6).Select(m => m["avatar_url"].ToString());
+    var discordInfo = await GetDiscordInfo();
+    var totalCount = discordInfo["profile"]["member_count"];
+    Console.WriteLine(totalCount); 
 
     return Div(
         id("hero"),
@@ -53,8 +56,8 @@ public static partial class HomeModule
                   target("_blank"),
                   @class("flex justify-center items-center flex-wrap mb-4"),
                   ImgSrc("/img/discord.svg", @class("nav-img mr-1 fill-white discord-img")),
-                  $"{present}/1000+ online now",
-                  Div(
+                  $"{present}/{totalCount} members online",
+                  Div( 
                     [
                       @class("p-2 flex -space-x-1 overflow-hidden"),
                       .. members.Select(x =>

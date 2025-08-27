@@ -1,6 +1,7 @@
 using CC.CSX;
 using static CC.CSX.HtmlElements;
 using static CC.CSX.HtmlAttributes;
+
 namespace BaseWeb;
 
 public static partial class Components
@@ -10,28 +11,55 @@ public static partial class Components
     public string Text { get; set; }
     public string Url { get; set; }
     public string Icon { get; set; }
+    public bool IsTicketPromo { get; set; }
   }
 
-  public static HtmlNode NavBar() {
+  public static HtmlNode NavBar()
+  {
     var navItems = new List<NavItem>() {
       new() { Text = "./about.html", Url = "/#about", Icon = "/img/icons/html.svg" },
       new() { Text = "./events.html", Url = "/events", Icon = "/img/icons/html.svg" },
       new() { Text = "./projects.html", Url = "/#projects", Icon = "/img/icons/html.svg" },
       new() { Text = "./contact.html", Url = "/#contact", Icon = "/img/icons/html.svg" },
+      new() { Text = "./wts", Url = "https://wts.sh/", Icon = "/img/icons/globe.svg", IsTicketPromo = true },
     };
 
+    var glowAnimation = @"
+      @keyframes glow {
+        0%   { box-shadow: 0 0 5px #facc15; }
+        50%  { box-shadow: 0 0 15px #facc15; }
+        100% { box-shadow: 0 0 5px #facc15; }
+      }
+    ";
+
     var NavItems = () => Fragment(
+      Style(glowAnimation),
+
       A(href("/"), @class("hidden md:block text-white text-xl font-bold"),
         ImgSrc("/img/base.svg", style("height: 100px; width: 200px;"))
       ),
       Li(AHref("/", "/home")),
+
       Fragment(
-        navItems.Select(item => Li(AHref(item.Url,
-          @class("menu-item ml-4 nav-with-img"),
-          (item.Icon != null ? ImgSrc(item.Icon, @class("nav-img fill-white"), style("transform: scale(1.5)")) : Fragment()),
-          item.Text
-        ))).ToArray()
+        navItems.Select(item =>
+          Li(
+            @class("flex items-center space-x-2 ml-4"),
+            AHref(
+              item.Url,
+              target(item.Url.StartsWith("http") ? "_blank" : null),
+              @class("menu-item nav-with-img flex items-center space-x-2"),
+              item.Icon != null
+                ? ImgSrc(item.Icon, @class("nav-img fill-white"), style("transform: scale(1.5)"))
+                : Fragment(),
+              Span(item.Text),
+              item.IsTicketPromo
+                ? Span("GET TIX", style("color: #facc15; border: 1px solid #facc15; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem; animation: glow 2s infinite;"))
+                : Fragment()
+            )
+          )
+        ).ToArray()
       ),
+
       Li(AHref("https://blog.42.mk",
         target("_blank"),
         @class("menu-item accented-text nav-with-img"),
@@ -53,19 +81,11 @@ public static partial class Components
       Li(
         @class("pt-2"),
         AHref("https://github.com/42dotmk/web/",
-        @class("menu-item accented-text"),
-        target("_blank"),
-        "[View Source]"
-      ))
-      // Li(AHref("/en/",
-      //   @class("menu-item accented-text"),
-      //   "[en]"
-      // ),
-      // "&nbsp;",
-      // AHref("/mk/",
-      //   @class("menu-item accented-text"),
-      //   "[mk]"
-      // ))
+          @class("menu-item accented-text"),
+          target("_blank"),
+          "[View Source]"
+        )
+      )
     );
 
     return Nav(
@@ -84,6 +104,7 @@ public static partial class Components
             NavItems()
           )
         )
-      ));
+      )
+    ); 
   }
 }

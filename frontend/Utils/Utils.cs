@@ -14,9 +14,15 @@ public static class CSXUtils
         !expr ? null : item;
 
 
-    public static Task<JsonObject?> GetDiscordWidget() {
+    public static Task<JsonObject?> GetDiscordWidget()
+    {
         var http = new HttpClient();
-        return http.GetFromJsonAsync<JsonObject>(Constants.DiscordWidgetUrl);
+        return http.GetFromJsonAsync<JsonObject>(Constants.DiscordWidgetUrl); 
+    }
+   public static Task<JsonObject?> GetDiscordInfo()
+    {
+        var http = new HttpClient();
+        return http.GetFromJsonAsync<JsonObject>(Constants.DiscordMembersUrl);  
     }
 
         
