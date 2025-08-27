@@ -34,7 +34,7 @@ public static partial class HomeModule
     var members = wgt["members"].AsArray().OrderBy(x => rnd.Next()).Take(6).Select(m => m["avatar_url"].ToString());
     var discordInfo = await GetDiscordInfo();
     var totalCount = discordInfo["profile"]["member_count"];
-    Console.WriteLine(totalCount); 
+    
 
     return Div(
         id("hero"),
