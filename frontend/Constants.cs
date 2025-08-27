@@ -7,7 +7,7 @@ public static class Constants
 
   public static string DiscordMembersUrl = Environment.GetEnvironmentVariable("DISCORD_INVITE_URL") ?? "https://discord.com/api/invites/424xxTZVYX?with_counts=true";
 
-  public static string StrapiUrl = Environment.GetEnvironmentVariable("STRAPI_URL") ?? "http://localhost:1337/api";
+  public static string StrapiUrl = Environment.GetEnvironmentVariable("STRAPI_URL") ?? "http://localhost:1337/api/";
 
   public static string StrapiUrlBase = StrapiUrl.Substring(0, StrapiUrl.Length - 5);
 
