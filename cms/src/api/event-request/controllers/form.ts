@@ -31,7 +31,7 @@ export default {
     eventRequest.eventStart += ":00";
     eventRequest.eventEnd += ":00";
 
-    const res = await strapi.entityService.create("api::event-request.event-request", {
+    const res = await strapi.documents("api::event-request.event-request").create({
       data: eventRequest,
     });
 

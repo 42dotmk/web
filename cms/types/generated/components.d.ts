@@ -1,19 +1,19 @@
-import type { Attribute, Schema } from '@strapi/strapi';
+import type { Schema, Struct } from '@strapi/strapi';
 
-export interface EventDataTags extends Schema.Component {
+export interface EventDataTags extends Struct.ComponentSchema {
   collectionName: 'components_event_data_tags';
   info: {
     displayName: 'Tags';
     icon: 'apps';
   };
   attributes: {
-    tagName: Attribute.String;
+    tagName: Schema.Attribute.String;
   };
 }
 
-declare module '@strapi/types' {
-  export module Shared {
-    export interface Components {
+declare module '@strapi/strapi' {
+  export module Public {
+    export interface ComponentSchemas {
       'event-data.tags': EventDataTags;
     }
   }

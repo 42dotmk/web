@@ -1,4 +1,4 @@
-FROM node:20 as node
+FROM node:24 as node
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ WORKDIR /app/css
 RUN npm install
 RUN npm run build
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 as build
 
 COPY --from=node /app/ /build/
 
@@ -22,7 +22,7 @@ WORKDIR /build
 
 RUN dotnet publish -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 COPY --from=build /app/publish /app
 
 WORKDIR /app
