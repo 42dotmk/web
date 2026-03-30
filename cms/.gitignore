@@ -112,3 +112,10 @@ exports
 dist
 build
 .strapi-updater.json
+
+############################
+# Firebase credentials
+############################
+
+*firebase*.json
+*adminsdk*.json

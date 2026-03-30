@@ -1,2 +1,4 @@
 .DS_Store
 .env
+/cms/src/*adminsdk.json
+/cms/types/generated/
