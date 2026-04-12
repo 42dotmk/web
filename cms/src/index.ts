@@ -16,6 +16,9 @@ export default {
     strapi.documents.use(eventNotificationMiddleware());
 
     strapi.plugin('users-permissions').controllers.auth.saveFcmToken = async (ctx) => {
+      if (!ctx.state.user) {
+        return ctx.unauthorized('You must be logged in');
+      }
       const token = ctx.request.body.token || ctx.request.body.fcmToken;
 
       if (!token) {
@@ -23,13 +26,13 @@ export default {
         return ctx.badRequest('FCM token is required');
       }
 
-      const result = await strapi.entityService.update(
+      await strapi.entityService.update(
         'plugin::users-permissions.user',
         ctx.state.user.id,
         { data: { fcmToken: token } }
       );
 
-      ctx.body = result;
+      ctx.body = { ok: true };
     };
 
     strapi.plugin('users-permissions').routes['content-api'].routes.push({

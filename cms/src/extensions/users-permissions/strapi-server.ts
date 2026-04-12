@@ -3,6 +3,7 @@ module.exports = (plugin) => {
 
   userAttributes.fcmToken = {
     type: 'string',
+    private: true,
   };
 
   return plugin;
