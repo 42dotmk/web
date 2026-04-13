@@ -1,3 +1,6 @@
+import customRoutes from "./routes/custom-routes";
+import userController from './controllers/user';
+
 module.exports = (plugin) => {
   const userAttributes = plugin.contentTypes.user.schema.attributes;
 
@@ -21,6 +24,10 @@ module.exports = (plugin) => {
     target: 'api::user-event.user-event',
     mappedBy: 'user',
   };
+
+  plugin.controllers.user.updateProfile = userController.updateProfile;
+
+  plugin.routes['content-api'].routes.push(...customRoutes.routes);
 
   return plugin;
 };

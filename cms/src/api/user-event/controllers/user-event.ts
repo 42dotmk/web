@@ -64,7 +64,6 @@ export default factories.createCoreController('api::user-event.user-event', ({ s
         },
       });
     } else {
-      // Create new record
       result = await strapi.documents('api::user-event.user-event').create({
         data: {
           user: userId,
