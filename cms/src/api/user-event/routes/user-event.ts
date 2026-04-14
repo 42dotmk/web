@@ -6,17 +6,8 @@ export default {
   routes: [
     {
       method: 'POST',
-      path: '/user-events/mark-interested',
-      handler: 'user-event.markInterested',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
-    {
-      method: 'POST',
-      path: '/user-events/mark-attended',
-      handler: 'user-event.markAttended',
+      path: '/user-events/change-status',
+      handler: 'user-event.changeStatus',
       config: {
         policies: [],
         middlewares: [],

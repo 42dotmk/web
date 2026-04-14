@@ -672,16 +672,14 @@ export interface ApiUserEventUserEvent extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    attendanceStatus: Schema.Attribute.Enumeration<
+      ['interested', 'going', 'attended', 'cancelled']
+    > &
+      Schema.Attribute.DefaultTo<'interested'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
-    hasAttended: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
-    isInterested: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
