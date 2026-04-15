@@ -24,15 +24,10 @@
       "target": "api::event.event",
       "inversedBy": "userEvents"
     },
-    "isInterested": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "hasAttended": {
-      "type": "boolean",
-      "default": false,
-      "required": true
+    "attendanceStatus": {
+      "type": "enumeration",
+      "enum": ["interested", "going", "attended", "cancelled"],
+      "default": "interested"
     }
   }
 }
