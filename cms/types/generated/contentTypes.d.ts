@@ -1229,6 +1229,7 @@ export interface PluginUsersPermissionsUser
     Schema.Attribute.SetMinMaxLength<{
       minLength: 6;
     }>;
+    fcmToken: Schema.Attribute.String & Schema.Attribute.Private;
     firstName: Schema.Attribute.String;
     lastName: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

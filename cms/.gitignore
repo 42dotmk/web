@@ -113,4 +113,9 @@ dist
 build
 .strapi-updater.json
 
-*adminsdk.json
+############################
+# Firebase credentials
+############################
+
+*firebase*.json
+*adminsdk*.json
