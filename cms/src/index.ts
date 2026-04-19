@@ -13,36 +13,35 @@ export default {
    * This gives you an opportunity to extend code.
    */
   register({ strapi }) {
-    strapi.documents.use(eventNotificationMiddleware());
 
-    strapi.plugin('users-permissions').controllers.auth.saveFcmToken = async (ctx) => {
-      if (!ctx.state.user) {
-        return ctx.unauthorized('You must be logged in');
-      }
-      const token = ctx.request.body.token || ctx.request.body.fcmToken;
+    // Override the default Keycloak provider to fetch user info
+    // from the Keycloak userinfo endpoint
+    const registry = strapi
+      .plugin('users-permissions')
+      .service('providers-registry');
 
-      if (!token) {
-        strapi.log.warn(`No FCM token provided. Body: ${JSON.stringify(ctx.request.body)}`);
-        return ctx.badRequest('FCM token is required');
-      }
+    const defaultKeycloakProvider = registry.get('keycloak');
 
-      await strapi.entityService.update(
-        'plugin::users-permissions.user',
-        ctx.state.user.id,
-        { data: { fcmToken: token } }
-      );
+    registry.add('keycloak', {
+      ...defaultKeycloakProvider,
+      async authCallback({ accessToken, providers, purest }) {
+        const keycloak = purest({ provider: 'keycloak' });
 
-      ctx.body = { ok: true };
-    };
-
-    strapi.plugin('users-permissions').routes['content-api'].routes.push({
-      method: 'POST',
-      path: '/auth/fcmToken',
-      handler: 'auth.saveFcmToken',
-      config: {
-        prefix: '',
+        return keycloak
+          .subdomain(providers.keycloak.subdomain)
+          .get('protocol/openid-connect/userinfo')
+          .auth(accessToken)
+          .request()
+          .then(({ body }) => ({
+            username: body.preferred_username,
+            email: body.email,
+            firstName: body.given_name,
+            lastName: body.family_name,
+          }));
       },
     });
+
+    strapi.documents.use(eventNotificationMiddleware());
   },
 
   /**

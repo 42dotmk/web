@@ -31,6 +31,7 @@ module.exports = (plugin) => {
   };
 
   plugin.controllers.user.updateProfile = userController.updateProfile;
+  plugin.controllers.user.saveFcmToken = userController.saveFcmToken;
 
   plugin.routes['content-api'].routes.push(...customRoutes.routes);
 

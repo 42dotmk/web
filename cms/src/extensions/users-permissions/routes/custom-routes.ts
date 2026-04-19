@@ -9,5 +9,13 @@ export default {
         prefix: '',
       },
     },
+    {
+      method: 'POST',
+      path: '/auth/fcmToken',
+      handler: 'user.saveFcmToken',
+      config: {
+        prefix: '',
+      },
+    },
   ],
 }
