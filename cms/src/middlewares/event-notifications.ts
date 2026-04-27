@@ -133,8 +133,6 @@ export const eventNotificationMiddleware = () => {
       }
     } else if (context.action === 'create' && result?.publishedAt) {
       await sendEventNotifications(strapi, result);
-    } else {
-      strapi.log.info(`[Event Middleware] Notification NOT sent - Action: ${context.action}, Published: ${!!result?.publishedAt}`);
     }
 
     return result;
