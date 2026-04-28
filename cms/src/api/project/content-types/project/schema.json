@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project",
+    "description": "Cached GitHub repositories for mobile app consumption"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "github_repo_id": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "language": {
+      "type": "string"
+    },
+    "stargazers_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "owner_login": {
+      "type": "string",
+      "required": true
+    },
+    "pushed_at": {
+      "type": "datetime"
+    },
+    "pr_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "help_wanted_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "contributors": {
+      "type": "json"
+    },
+    "commit_activity": {
+      "type": "json"
+    },
+    "last_synced_at": {
+      "type": "datetime"
+    }
+  }
+}
