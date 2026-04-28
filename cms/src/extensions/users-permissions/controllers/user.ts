@@ -107,4 +107,24 @@ export default {
       return ctx.internalServerError('Failed to update profile');
     }
   },
+
+  async saveFcmToken(ctx) {
+    if (!ctx.state.user) {
+      return ctx.unauthorized('You must be logged in');
+    }
+    const token = ctx.request.body.token || ctx.request.body.fcmToken;
+
+    if (!token) {
+      strapi.log.warn(`No FCM token provided. Body: ${JSON.stringify(ctx.request.body)}`);
+      return ctx.badRequest('FCM token is required');
+    }
+
+    await strapi.entityService.update(
+      'plugin::users-permissions.user',
+      ctx.state.user.id,
+      { data: { fcmToken: token } }
+    );
+
+    ctx.body = { ok: true };
+  },
 };
