@@ -13,5 +13,14 @@ export default {
         middlewares: [],
       },
     },
+    {
+      method: 'GET',
+      path: '/user-events/me',
+      handler: 'user-event.findByUser',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };
