@@ -6,8 +6,8 @@ export default ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
-  githubToken: env('GITHUB_TOKEN'),
-  githubOrg: env('GITHUB_ORG', 'base42'),
+  githubToken: env('PROJECTS_TOKEN'),
+  githubOrg: env('PROJECTS_ORG', 'base42'),
   projectSyncSecret: env('PROJECT_SYNC_SECRET'),
   cron: {
     enabled: true,
