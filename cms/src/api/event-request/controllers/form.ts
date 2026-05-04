@@ -21,7 +21,20 @@ export default {
     const body = ctx.request.body;
 
     try {
+      if (!body || typeof body !== 'object') {
+        ctx.status = 400;
+        ctx.body = { error: { message: 'Invalid request body' } };
+        return;
+      }
+
       const formData = body.data || body; // Accept both wrapped and unwrapped
+
+      if (!formData || typeof formData !== 'object' || Object.keys(formData).length === 0) {
+        ctx.status = 400;
+        ctx.body = { error: { message: 'No form data provided' } };
+        return;
+      }
+
       const eventRequest = Object.keys(formData).reduce((acc, key) => {
         const value = formData[key];
         const mappedKey = formToJsonMap[key];
