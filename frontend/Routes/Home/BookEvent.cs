@@ -125,20 +125,23 @@ public static partial class HomeModule
         submit.setAttribute('disabled', true);
         submit.innerHTML = 'Submitting...';
         try {
-          const res = await fetch('" + Constants.StrapiUrl + @"event-requests/submit', {
+          const response = await fetch('" + Constants.StrapiUrl + @"event-requests/submit', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ data }),
-          })
-          .then(response => response.json())
+          });
+          const res = await response.json();
+          if (!response.ok) {
+            throw new Error(res.error?.message || res.message || 'Server returned an error');
+          }
           console.log('Success:', res);
           alert('Your request has been submitted successfully! Check your email for a confirmation. (Check spam too!)');
         }
         catch (error) {
           console.error('Error:', error);
-          alert('Something went wrong. Please try again later.');
+          alert('Error: ' + (error.message || 'Something went wrong. Please try again later.'));
         }
         finally {
           submit.removeAttribute('disabled');

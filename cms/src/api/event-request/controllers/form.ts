@@ -18,62 +18,95 @@ const formToJsonMap = {
 
 export default {
   async submit(ctx: any, next) {
-    const eventRequest = Object.keys(ctx.request.body.data).reduce((acc, key) => {
-      const value = ctx.request.body.data[key];
-      const mappedKey = formToJsonMap[key];
-      if (mappedKey) {
-        acc[mappedKey] = value;
-      }
-      return acc;
-    }, {} as any);
+    const body = ctx.request.body;
 
-    eventRequest.physicalPresence = eventRequest.physicalPresence === "yes";
-    eventRequest.eventStart += ":00";
-    eventRequest.eventEnd += ":00";
+    try {
+      const formData = body.data || body; // Accept both wrapped and unwrapped
+      const eventRequest = Object.keys(formData).reduce((acc, key) => {
+        const value = formData[key];
+        const mappedKey = formToJsonMap[key];
+        if (mappedKey) {
+          acc[mappedKey] = value;
+        }
+        return acc;
+      }, {} as any);
 
-    const res = await strapi.documents("api::event-request.event-request").create({
-      data: eventRequest,
-    });
+      eventRequest.physicalPresence = eventRequest.physicalPresence === "yes";
+      eventRequest.eventStart += ":00";
+      eventRequest.eventEnd += ":00";
 
-    const requestCopy = `<p><strong>Organizing entity</strong>: ${eventRequest.organizingEntity}</p>
-    <p><strong>Initiator name</strong>: ${eventRequest.initiatorName}</p>
-    <p><strong>Initiator email</strong>: ${eventRequest.initiatorEmail}</p>
-    <p><strong>Initiator phone</strong> number: ${eventRequest.initiatorPhoneNumber}</p>
-    <p><strong>Organization:</strong> ${eventRequest.organization}</p>
-    <p><strong>Event type</strong>: ${eventRequest.eventType}</p>
-    <p><strong>Event name</strong>: ${eventRequest.eventName}</p>
-    <p><strong>Event theme</strong>: ${eventRequest.eventTheme}</p>
-    <p><strong>Event purpose</strong>: ${eventRequest.eventPurpose}</p>
-    <p><strong>Event date</strong>: ${eventRequest.eventDate}</p>
-    <p><strong>Event start</strong>: ${eventRequest.eventStart}</p>
-    <p><strong>Event end</strong>: ${eventRequest.eventEnd}</p>
-    <p><strong>Physical presence</strong>: ${eventRequest.physicalPresence}</p>
-    <p><strong>Event agenda</strong>: ${eventRequest.eventAgenda}</p>
-    <p><strong>Expected guests</strong>: ${eventRequest.expectedGuests}</p>
-  `;
+      const res = await strapi.documents("api::event-request.event-request").create({
+        data: eventRequest,
+      });
 
-    await strapi.plugins['email'].services.email.send({
-      to: eventRequest.initiatorEmail,
-      from: 'hello@42.mk',
-      replyTo: 'hello@42.mk',
-      subject: 'Your event request has been received! - 42.mk',
-      html: `Thank you for submitting your event request. We will get back to you as soon as possible.
-      Here's a copy of your request:
-      <br/><br/>
-      ${requestCopy}
-    `
-    }),
+      const requestCopy = `<p><strong>Organizing entity</strong>: ${eventRequest.organizingEntity}</p>
+      <p><strong>Initiator name</strong>: ${eventRequest.initiatorName}</p>
+      <p><strong>Initiator email</strong>: ${eventRequest.initiatorEmail}</p>
+      <p><strong>Initiator phone</strong> number: ${eventRequest.initiatorPhoneNumber}</p>
+      <p><strong>Organization:</strong> ${eventRequest.organization}</p>
+      <p><strong>Event type</strong>: ${eventRequest.eventType}</p>
+      <p><strong>Event name</strong>: ${eventRequest.eventName}</p>
+      <p><strong>Event theme</strong>: ${eventRequest.eventTheme}</p>
+      <p><strong>Event purpose</strong>: ${eventRequest.eventPurpose}</p>
+      <p><strong>Event date</strong>: ${eventRequest.eventDate}</p>
+      <p><strong>Event start</strong>: ${eventRequest.eventStart}</p>
+      <p><strong>Event end</strong>: ${eventRequest.eventEnd}</p>
+      <p><strong>Physical presence</strong>: ${eventRequest.physicalPresence}</p>
+      <p><strong>Event agenda</strong>: ${eventRequest.eventAgenda}</p>
+      <p><strong>Expected guests</strong>: ${eventRequest.expectedGuests}</p>
+    `;
+
+      await strapi.plugins['email'].services.email.send({
+        to: eventRequest.initiatorEmail,
+        from: 'hello@42.mk',
+        replyTo: 'hello@42.mk',
+        subject: 'Your event request has been received! - 42.mk',
+        html: `Thank you for submitting your event request. We will get back to you as soon as possible.
+        Here's a copy of your request:
+        <br/><br/>
+        ${requestCopy}
+      `
+      });
+
       await strapi.plugins['email'].services.email.send({
         to: 'hello@42.mk',
         from: 'hello@42.mk',
         replyTo: eventRequest.initiatorEmail,
         subject: `New event request from ${eventRequest.initiatorName}`,
         html: `A new event request has been submitted. Here's a copy of the request:
-      <br/><br/>
-      ${requestCopy}
-    `
-      }),
+        <br/><br/>
+        ${requestCopy}
+      `
+      });
 
       ctx.body = res;
+    } catch (error) {
+      console.error('Event request submission error:', error);
+
+      // Try to notify admin of the error
+      try {
+        await strapi.plugins['email'].services.email.send({
+          to: 'hello@42.mk',
+          from: 'hello@42.mk',
+          subject: '[ERROR] Event request submission failed',
+          html: `<p>An error occurred while processing an event request submission.</p>
+          <p><strong>Error:</strong> ${error.message || String(error)}</p>
+          <p><strong>Stack:</strong></p>
+          <pre>${error.stack || 'No stack trace available'}</pre>
+          <p><strong>Request body:</strong></p>
+          <pre>${JSON.stringify(body, null, 2)}</pre>
+        `
+        });
+      } catch (emailError) {
+        console.error('Failed to send error notification email:', emailError);
+      }
+
+      ctx.status = 500;
+      ctx.body = {
+        error: {
+          message: 'Failed to submit event request. The administrator has been notified.',
+        }
+      };
+    }
   },
 };
