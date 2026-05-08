@@ -2,6 +2,16 @@
  * event-request router
  */
 
-import { factories } from '@strapi/strapi';
-
-export default factories.createCoreRouter('api::event-request.event-request');
+export default {
+  routes: [
+    {
+      method: 'POST',
+      path: '/event-requests/:id/approve',
+      handler: 'event-request.approve',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+  ],
+};

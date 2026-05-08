@@ -52,6 +52,24 @@ export default {
         data: eventRequest,
       });
 
+      const startDateTime = `${eventRequest.eventDate}T${eventRequest.eventStart}`;
+
+      const draftEvent = await strapi.documents("api::event.event").create({
+        data: {
+          title: eventRequest.eventName,
+          description: `${eventRequest.eventPurpose}\n\n${eventRequest.eventTheme}`,
+          start: startDateTime,
+          summary: eventRequest.eventAgenda,
+          tags: eventRequest.eventTheme ? [{ tagName: eventRequest.eventTheme }] : [],
+        },
+        status: "draft",
+      });
+
+      await strapi.documents("api::event-request.event-request").update({
+        documentId: res.documentId,
+        data: { event: draftEvent.documentId } as any,
+      });
+
       const requestCopy = `<p><strong>Organizing entity</strong>: ${eventRequest.organizingEntity}</p>
       <p><strong>Initiator name</strong>: ${eventRequest.initiatorName}</p>
       <p><strong>Initiator email</strong>: ${eventRequest.initiatorEmail}</p>
