@@ -58,7 +58,6 @@ export default {
     if (!ctx.state.user) return ctx.unauthorized();
 
     const user = ctx.state.user;
-    strapi.log.info(`Volunteer application received from user: ${user.id} (${user.username}, ${user.email})`);
 
     try {
       await strapi.plugins['email'].services.email.send({
@@ -76,9 +75,8 @@ export default {
           <p>You can review and update this user's type in the Strapi admin dashboard.</p>
         `,
       });
-      strapi.log.info(`Volunteer application email sent successfully for user: ${user.id}`);
     } catch (emailError) {
-      strapi.log.error(`Failed to send volunteer application email for user ${user.id}: ${emailError}`);
+      strapi.log.error(`Volunteer application email failed: ${emailError}`);
     }
 
     ctx.body = { ok: true, message: 'Volunteer application submitted successfully' };
