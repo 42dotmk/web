@@ -40,6 +40,50 @@ function validateProfilePictureId(id: any, ctx: any) {
 }
 
 export default {
+  async me(ctx) {
+    if (!ctx.state.user) return ctx.unauthorized();
+
+    const user = await strapi.documents('plugin::users-permissions.user').findOne({
+      documentId: ctx.state.user.documentId,
+      populate: ['role', 'profilePicture', 'memberships'],
+    });
+
+    if (!user) return ctx.notFound();
+
+    const { password, resetPasswordToken, confirmationToken, ...safeUser } = user;
+    ctx.body = safeUser;
+  },
+
+  async volunteerApply(ctx) {
+    if (!ctx.state.user) return ctx.unauthorized();
+
+    const user = ctx.state.user;
+    strapi.log.info(`Volunteer application received from user: ${user.id} (${user.username}, ${user.email})`);
+
+    try {
+      await strapi.plugins['email'].services.email.send({
+        to: 'hello@42.mk',
+        from: 'hello@42.mk',
+        replyTo: user.email,
+        subject: `New volunteer application from ${user.username}`,
+        html: `
+          <p>A new volunteer application has been submitted.</p>
+          <p><strong>Username:</strong> ${user.username}</p>
+          <p><strong>Email:</strong> ${user.email}</p>
+          <p><strong>First name:</strong> ${user.firstName || 'N/A'}</p>
+          <p><strong>Last name:</strong> ${user.lastName || 'N/A'}</p>
+          <hr/>
+          <p>You can review and update this user's type in the Strapi admin dashboard.</p>
+        `,
+      });
+      strapi.log.info(`Volunteer application email sent successfully for user: ${user.id}`);
+    } catch (emailError) {
+      strapi.log.error(`Failed to send volunteer application email for user ${user.id}: ${emailError}`);
+    }
+
+    ctx.body = { ok: true, message: 'Volunteer application submitted successfully' };
+  },
+
   async updateProfile(ctx) {
     if (!ctx.state.user) return ctx.unauthorized();
 

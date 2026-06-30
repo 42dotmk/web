@@ -30,8 +30,28 @@ module.exports = (plugin) => {
     mappedBy: 'user',
   };
 
+  userAttributes.stripeCustomerId = {
+    type: 'string',
+    private: true,
+  };
+
+  userAttributes.userType = {
+    type: 'enumeration',
+    enum: ['user', 'volunteer', 'member'],
+    default: 'user',
+  };
+
+  userAttributes.memberships = {
+    type: 'relation',
+    relation: 'oneToMany',
+    target: 'api::membership.membership',
+    mappedBy: 'user',
+  };
+
   plugin.controllers.user.updateProfile = userController.updateProfile;
   plugin.controllers.user.saveFcmToken = userController.saveFcmToken;
+  plugin.controllers.user.me = userController.me;
+  plugin.controllers.user.volunteerApply = userController.volunteerApply;
 
   plugin.routes['content-api'].routes.push(...customRoutes.routes);
 
