@@ -8,5 +8,30 @@ export default {
         prefix: '',
       },
     },
+    {
+      method: 'POST',
+      path: '/memberships/create-checkout',
+      handler: 'membership.createCheckoutSession',
+      config: {
+        prefix: '',
+      },
+    },
+    {
+      method: 'POST',
+      path: '/memberships/portal',
+      handler: 'membership.createPortalSession',
+      config: {
+        prefix: '',
+      },
+    },
+    {
+      method: 'POST',
+      path: '/memberships/webhook',
+      handler: 'membership.webhook',
+      config: {
+        prefix: '',
+        auth: false,
+      },
+    },
   ],
 };
