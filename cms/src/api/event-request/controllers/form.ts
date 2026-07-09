@@ -17,7 +17,7 @@ const formToJsonMap = {
 };
 
 export default {
-  async submit(ctx: any, next) {
+  async submit(ctx, next) {
     const body = ctx.request.body;
 
     try {
@@ -42,7 +42,7 @@ export default {
           acc[mappedKey] = value;
         }
         return acc;
-      }, {} as any);
+      }, {} as Record<string, unknown>);
 
       eventRequest.physicalPresence = eventRequest.physicalPresence === "yes";
       eventRequest.eventStart += ":00";
@@ -50,6 +50,24 @@ export default {
 
       const res = await strapi.documents("api::event-request.event-request").create({
         data: eventRequest,
+      });
+
+      const startDateTime = `${eventRequest.eventDate}T${eventRequest.eventStart}`;
+
+      const draftEvent = await strapi.documents("api::event.event").create({
+        data: {
+          title: eventRequest.eventName,
+          description: `${eventRequest.eventPurpose}\n\n${eventRequest.eventTheme}`,
+          start: startDateTime,
+          summary: eventRequest.eventAgenda,
+          tags: eventRequest.eventTheme ? [{ tagName: eventRequest.eventTheme }] : [],
+        },
+        status: "draft",
+      });
+
+      await strapi.documents("api::event-request.event-request").update({
+        documentId: res.documentId,
+        data: { event: draftEvent.documentId } as Record<string, unknown>,
       });
 
       const requestCopy = `<p><strong>Organizing entity</strong>: ${eventRequest.organizingEntity}</p>

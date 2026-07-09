@@ -2,6 +2,7 @@
 const admin = require('firebase-admin');
 import fs from 'fs/promises';
 import { eventNotificationMiddleware } from './middlewares/event-notifications';
+import { eventRequestApprovalMiddleware } from './middlewares/event-request-approval';
 
 const FIREBASE_FCM_CREDENTIALS_PATH = './base42-mobile-app-fcm-firebase-adminsdk.json';
 
@@ -42,6 +43,7 @@ export default {
     });
 
     strapi.documents.use(eventNotificationMiddleware());
+    strapi.documents.use(eventRequestApprovalMiddleware());
   },
 
   /**
