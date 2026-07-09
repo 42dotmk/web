@@ -6,11 +6,16 @@ import { factories } from '@strapi/strapi'
 
 export default factories.createCoreController('api::event-request.event-request', ({ strapi }) => ({
   async approve(ctx) {
+    const user = ctx.state?.user;
+    if (!user) {
+      return ctx.unauthorized();
+    }
+
     const { id } = ctx.params;
 
-    const request: any = await strapi.documents('api::event-request.event-request').findOne({
+    const request = await strapi.documents('api::event-request.event-request').findOne({
       documentId: id,
-      populate: ['event' as any],
+      populate: { event: true },
     });
 
     if (!request) {
@@ -32,7 +37,7 @@ export default factories.createCoreController('api::event-request.event-request'
 
       await strapi.documents('api::event-request.event-request').update({
         documentId: id,
-        data: { status: 'approved' } as any,
+        data: { status: 'approved' } as Record<string, unknown>,
       });
 
       await strapi.plugins['email'].services.email.send({
