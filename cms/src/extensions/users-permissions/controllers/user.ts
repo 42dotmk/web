@@ -11,6 +11,15 @@ const USERNAME_REGEX = /^[a-z0-9_]{3,20}$/;
 const NAME_REGEX = /^[a-zA-Z\s\-'.]+$/;
 const SANITIZE_REGEX = /[<>\"'&]/g;
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function validateNameFields(fieldName: string, value: string, ctx: any) {
   if (typeof value !== 'string' || value.length === 0) {
     return ctx.badRequest(`${fieldName} cannot be empty`);
@@ -58,28 +67,91 @@ export default {
     if (!ctx.state.user) return ctx.unauthorized();
 
     const user = ctx.state.user;
+    const body = ctx.request.body;
+
+    if (!body || typeof body !== 'object') {
+      ctx.status = 400;
+      ctx.body = { error: { message: 'Invalid request body' } };
+      return;
+    }
+
+    const { skills, message } = body;
+
+    if (!skills || !message) {
+      ctx.status = 400;
+      ctx.body = { error: { message: 'Skills and message are required' } };
+      return;
+    }
+
+    const applicantName = (
+      [user.firstName, user.lastName].filter(Boolean).join(' ').trim()
+      || user.username
+    );
+    const applicantEmail = user.email;
+
+    const applicationHtml = `
+      <p><strong>Name:</strong> ${escapeHtml(applicantName)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(applicantEmail)}</p>
+      <p><strong>Skills & Interests:</strong> ${escapeHtml(skills)}</p>
+      <p><strong>Why they want to volunteer:</strong></p>
+      <p>${escapeHtml(message)}</p>
+    `;
 
     try {
+      // Confirmation to the applicant
+      await strapi.plugins['email'].services.email.send({
+        to: applicantEmail,
+        from: 'hello@42.mk',
+        replyTo: 'hello@42.mk',
+        subject: 'Your volunteer application has been received! - 42.mk',
+        html: `Thank you for applying to volunteer at Base42! We'll review your application and get back to you soon.
+        <br/><br/>
+        Here's a copy of your application:
+        <br/><br/>
+        ${applicationHtml}
+      `,
+      });
+
+      // Notification to admin
       await strapi.plugins['email'].services.email.send({
         to: 'hello@42.mk',
         from: 'hello@42.mk',
-        replyTo: user.email,
-        subject: `New volunteer application from ${user.username}`,
-        html: `
-          <p>A new volunteer application has been submitted.</p>
-          <p><strong>Username:</strong> ${user.username}</p>
-          <p><strong>Email:</strong> ${user.email}</p>
-          <p><strong>First name:</strong> ${user.firstName || 'N/A'}</p>
-          <p><strong>Last name:</strong> ${user.lastName || 'N/A'}</p>
-          <hr/>
-          <p>You can review and update this user's type in the Strapi admin dashboard.</p>
-        `,
+        replyTo: applicantEmail,
+        subject: `New volunteer application from ${applicantName}`,
+        html: `A new volunteer application has been submitted. Here are the details:
+        <br/><br/>
+        ${applicationHtml}
+      `,
       });
-    } catch (emailError) {
-      strapi.log.error(`Volunteer application email failed: ${emailError}`);
-    }
 
-    ctx.body = { ok: true, message: 'Volunteer application submitted successfully' };
+      ctx.body = { ok: true, message: 'Volunteer application submitted successfully' };
+    } catch (error) {
+      strapi.log.error(`Volunteer application email failed: ${error}`);
+
+      try {
+        await strapi.plugins['email'].services.email.send({
+          to: 'hello@42.mk',
+          from: 'hello@42.mk',
+          subject: '[ERROR] Volunteer application email failed',
+          html: `<p>An error occurred while sending volunteer application emails.</p>
+          <p><strong>Error:</strong> ${error.message || String(error)}</p>
+          <p><strong>Stack:</strong></p>
+          <pre>${error.stack || 'No stack trace available'}</pre>
+          <p><strong>Applicant name:</strong> ${escapeHtml(applicantName)}</p>
+          <p><strong>Applicant email:</strong> ${escapeHtml(applicantEmail)}</p>
+        `,
+        });
+      } catch (emailError) {
+        strapi.log.error('Failed to send error notification email:', emailError);
+      }
+
+      ctx.status = 500;
+      ctx.body = {
+        error: {
+          message: 'Failed to submit volunteer application. Please try again later.',
+        }
+      };
+    }
   },
 
   async updateProfile(ctx) {
