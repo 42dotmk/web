@@ -13,10 +13,16 @@ export default factories.createCoreController('api::event-request.event-request'
 
     const { id } = ctx.params;
 
-    const request = await strapi.documents('api::event-request.event-request').findOne({
+        const request = (await strapi.documents('api::event-request.event-request').findOne({
       documentId: id,
-      populate: { event: true },
-    });
+      populate: { event: true } as never,
+    })) as {
+      documentId: string;
+      status?: string;
+      initiatorEmail?: string;
+      eventName?: string;
+      event?: { documentId: string } | null;
+    } | null; 
 
     if (!request) {
       return ctx.notFound('Event request not found');
