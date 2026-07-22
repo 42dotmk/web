@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "memberships",
+  "info": {
+    "singularName": "membership",
+    "pluralName": "memberships",
+    "displayName": "Membership",
+    "description": "Tracks user membership subscriptions"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "memberships"
+    },
+    "tier": {
+      "type": "enumeration",
+      "enum": ["monthly", "yearly"],
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["active", "inactive", "cancelled", "cancel_pending", "pending"],
+      "default": "pending"
+    },
+    "startDate": {
+      "type": "datetime"
+    },
+    "endDate": {
+      "type": "datetime"
+    },
+    "stripeSubscriptionId": {
+      "type": "string",
+      "private": true
+    }
+  }
+}
