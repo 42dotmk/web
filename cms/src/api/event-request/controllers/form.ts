@@ -16,8 +16,41 @@ const formToJsonMap = {
   "expected-guests": "expectedGuests",
 };
 
+interface EventRequestInput {
+  organizingEntity: string;
+  initiatorName: string;
+  initiatorEmail: string;
+  initiatorPhoneNumber: string;
+  organization: string;
+  eventType: string;
+  eventName: string;
+  eventTheme: string;
+  eventPurpose: string;
+  eventDate: string;
+  eventStart: string;
+  eventEnd: string;
+  eventAgenda: string;
+  expectedGuests: number;
+  physicalPresence: boolean;
+}
+
+function assertString(value: unknown, field: string): string {
+  if (typeof value !== 'string') {
+    throw new Error(`Field "${field}" must be a string`);
+  }
+  return value;
+}
+
+function assertNumber(value: unknown, field: string): number {
+  const num = typeof value === 'string' ? Number(value) : value;
+  if (typeof num !== 'number' || Number.isNaN(num)) {
+    throw new Error(`Field "${field}" must be a number`);
+  }
+  return num;
+}
+
 export default {
-  async submit(ctx: any, next) {
+  async submit(ctx, next) {
     const body = ctx.request.body;
 
     try {
@@ -35,18 +68,34 @@ export default {
         return;
       }
 
-      const eventRequest = Object.keys(formData).reduce((acc, key) => {
-        const value = formData[key];
+      const raw: Record<string, unknown> = Object.keys(formData).reduce((acc, key) => {
         const mappedKey = formToJsonMap[key];
         if (mappedKey) {
-          acc[mappedKey] = value;
+          acc[mappedKey] = formData[key];
         }
         return acc;
-      }, {} as any);
+      }, {} as Record<string, unknown>);
 
-      eventRequest.physicalPresence = eventRequest.physicalPresence === "yes";
-      eventRequest.eventStart += ":00";
-      eventRequest.eventEnd += ":00";
+      const eventRequest: EventRequestInput = {
+        organizingEntity: assertString(raw.organizingEntity, 'organizingEntity'),
+        initiatorName: assertString(raw.initiatorName, 'initiatorName'),
+        initiatorEmail: assertString(raw.initiatorEmail, 'initiatorEmail'),
+        initiatorPhoneNumber: assertString(raw.initiatorPhoneNumber, 'initiatorPhoneNumber'),
+        organization: assertString(raw.organization, 'organization'),
+        eventType: assertString(raw.eventType, 'eventType'),
+        eventName: assertString(raw.eventName, 'eventName'),
+        eventTheme: assertString(raw.eventTheme, 'eventTheme'),
+        eventPurpose: assertString(raw.eventPurpose, 'eventPurpose'),
+        eventDate: assertString(raw.eventDate, 'eventDate'),
+        eventStart: assertString(raw.eventStart, 'eventStart'),
+        eventEnd: assertString(raw.eventEnd, 'eventEnd'),
+        eventAgenda: assertString(raw.eventAgenda, 'eventAgenda'),
+        expectedGuests: assertNumber(raw.expectedGuests, 'expectedGuests'),
+        physicalPresence: raw.physicalPresence === 'yes',
+      };
+
+      eventRequest.eventStart += ':00';
+      eventRequest.eventEnd += ':00';
 
       const res = await strapi.documents("api::event-request.event-request").create({
         data: eventRequest,
@@ -67,7 +116,7 @@ export default {
 
       await strapi.documents("api::event-request.event-request").update({
         documentId: res.documentId,
-        data: { event: draftEvent.documentId } as any,
+        data: { event: draftEvent.documentId } as Record<string, unknown>,
       });
 
       const requestCopy = `<p><strong>Organizing entity</strong>: ${eventRequest.organizingEntity}</p>
