@@ -25,7 +25,7 @@
     },
     "status": {
       "type": "enumeration",
-      "enum": ["active", "inactive", "cancelled", "pending"],
+      "enum": ["active", "inactive", "cancelled", "cancel_pending", "pending"],
       "default": "pending"
     },
     "startDate": {

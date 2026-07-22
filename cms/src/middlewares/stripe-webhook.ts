@@ -8,7 +8,7 @@ export default (config, { strapi }) => {
         chunks.push(chunk);
       }
       const rawBody = Buffer.concat(chunks);
-      ctx.state.rawBody = rawBody.toString('utf8');
+      ctx.state.rawBody = rawBody;
 
       const stream: any = new PassThrough();
       stream.push(rawBody);

@@ -59,8 +59,11 @@ export default {
 
     if (!user) return ctx.notFound();
 
-    const { password, resetPasswordToken, confirmationToken, ...safeUser } = user;
-    ctx.body = safeUser;
+    const userSchema = strapi.contentType('plugin::users-permissions.user');
+    const sanitizedUser = await strapi.contentAPI.sanitize.output(user, userSchema, {
+      auth: ctx.state.auth ?? {},
+    });
+    ctx.body = sanitizedUser;
   },
 
   async volunteerApply(ctx) {
@@ -77,9 +80,21 @@ export default {
 
     const { skills, message } = body;
 
-    if (!skills || !message) {
+    if (typeof skills !== 'string' || !skills.trim()) {
       ctx.status = 400;
-      ctx.body = { error: { message: 'Skills and message are required' } };
+      ctx.body = { error: { message: 'Skills must be a non-empty string' } };
+      return;
+    }
+    if (typeof message !== 'string' || !message.trim()) {
+      ctx.status = 400;
+      ctx.body = { error: { message: 'Message must be a non-empty string' } };
+      return;
+    }
+
+    const MAX_LEN = 5000;
+    if (skills.length > MAX_LEN || message.length > MAX_LEN) {
+      ctx.status = 400;
+      ctx.body = { error: { message: 'Skills or message exceed maximum length' } };
       return;
     }
 
@@ -215,8 +230,11 @@ export default {
         data: safeData,
       });
 
-      const { password, resetPasswordToken, confirmationToken, ...safeUser } = updated;
-      ctx.body = safeUser;
+      const userSchema = strapi.contentType('plugin::users-permissions.user');
+      const sanitizedUser = await strapi.contentAPI.sanitize.output(updated, userSchema, {
+        auth: ctx.state.auth ?? {},
+      });
+      ctx.body = sanitizedUser;
     } catch (error) {
       return ctx.internalServerError('Failed to update profile');
     }

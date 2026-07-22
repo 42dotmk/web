@@ -24,6 +24,12 @@ function getTierForPriceId(priceId: string): 'monthly' | 'yearly' {
   return 'monthly';
 }
 
+function normalizeTier(tier: string | null | undefined, priceId?: string | null): 'monthly' | 'yearly' {
+  if (tier === 'monthly' || tier === 'yearly') return tier;
+  if (priceId) return getTierForPriceId(priceId);
+  return 'monthly';
+}
+
 async function getOrCreateStripeCustomer(ctx, stripe) {
   const documentId = ctx.state.user.documentId;
 
@@ -57,10 +63,11 @@ export default factories.createCoreController(UID, ({ strapi }) => ({
       populate: [],
     });
 
-    const active = memberships.find((m: any) => m.status === 'active');
+    const sanitizedMemberships = (await this.sanitizeOutput(memberships, ctx)) as any[];
+    const active = sanitizedMemberships.find((m: any) => m.status === 'active');
 
     ctx.body = {
-      memberships,
+      memberships: sanitizedMemberships,
       active: active || null,
     };
   },
@@ -70,7 +77,11 @@ export default factories.createCoreController(UID, ({ strapi }) => ({
 
     try {
       const stripe = getStripe();
-      const tier = (ctx.request.body as any)?.tier || 'monthly';
+      const rawTier = (ctx.request.body as any)?.tier;
+      if (rawTier !== undefined && rawTier !== null && rawTier !== 'monthly' && rawTier !== 'yearly') {
+        return ctx.badRequest('Invalid tier; must be monthly or yearly');
+      }
+      const tier = rawTier || 'monthly';
       const priceId = getPriceIdForTier(tier);
 
       if (!priceId) {
@@ -144,7 +155,7 @@ export default factories.createCoreController(UID, ({ strapi }) => ({
       return;
     }
 
-    const rawBody = ctx.state.rawBody as string | undefined;
+    const rawBody = ctx.state.rawBody as Buffer | undefined;
     if (!rawBody) {
       strapi.log.error('Missing raw body in ctx.state.rawBody');
       ctx.status = 400;
@@ -196,12 +207,13 @@ export default factories.createCoreController(UID, ({ strapi }) => ({
           }
 
           let tier = session.metadata?.tier || session.subscription_details?.metadata?.tier;
+          let fallbackPriceId: string | undefined;
           if (!tier && subscriptionId) {
-            // Fallback: retrieve subscription and read metadata or price ID
             const sub = await stripe.subscriptions.retrieve(subscriptionId);
-            tier = sub.metadata?.tier || getTierForPriceId(sub.items?.data?.[0]?.price?.id);
+            tier = sub.metadata?.tier;
+            fallbackPriceId = sub.items?.data?.[0]?.price?.id;
           }
-          tier ||= 'monthly';
+          tier = normalizeTier(tier, fallbackPriceId);
           const isPaid = session.payment_status === 'paid';
 
           await strapi.documents(UID).create({
@@ -246,7 +258,7 @@ export default factories.createCoreController(UID, ({ strapi }) => ({
           }
 
           const priceId = createdSub.items?.data?.[0]?.price?.id;
-          const tier = createdSub.metadata?.tier || getTierForPriceId(priceId);
+          const tier = normalizeTier(createdSub.metadata?.tier, priceId);
           const currentPeriodEnd = new Date(createdSub.current_period_end * 1000);
 
           await strapi.documents(UID).create({
@@ -324,11 +336,8 @@ export default factories.createCoreController(UID, ({ strapi }) => ({
               status = 'cancelled';
             }
 
-            let tier = membership.tier;
-            if (subscription.items?.data?.[0]?.price?.id) {
-              const newPriceId = subscription.items.data[0].price.id;
-              tier = getTierForPriceId(newPriceId);
-            }
+            const newPriceId = subscription.items?.data?.[0]?.price?.id;
+            const tier = newPriceId ? normalizeTier(undefined, newPriceId) : normalizeTier(membership.tier);
 
             await strapi.db.query(UID).update({
               where: { id: membership.id },
@@ -374,7 +383,7 @@ export default factories.createCoreController(UID, ({ strapi }) => ({
             }
 
             const priceId = subscription.items?.data?.[0]?.price?.id;
-            const tier = getTierForPriceId(priceId);
+            const tier = normalizeTier(undefined, priceId);
             const currentPeriodEnd = new Date(subscription.current_period_end * 1000);
 
             await strapi.documents(UID).create({
