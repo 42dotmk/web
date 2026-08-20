@@ -1,3 +1,7 @@
+import { errors } from '@strapi/utils';
+
+const { ValidationError } = errors;
+
 interface UpdateProfileBody {
   username?: string;
   firstName?: string;
@@ -20,7 +24,7 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#039;');
 }
 
-function validateNameFields(fieldName: string, value: string, ctx: any) {
+function validateNameFields(fieldName: string, value: string) {
   if (typeof value !== 'string' || value.length === 0) {
     throw new ValidationError(`${fieldName} cannot be empty`);
   } else if (value.length < 2) {
@@ -58,11 +62,28 @@ export default {
 
     if (!user) return ctx.notFound();
 
-    const userSchema = strapi.contentType('plugin::users-permissions.user');
-    const sanitizedUser = await strapi.contentAPI.sanitize.output(user, userSchema, {
-      auth: ctx.state.auth ?? {},
-    });
-    ctx.body = sanitizedUser;
+    ctx.body = {
+      id: user.id,
+      documentId: user.documentId,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      provider: user.provider,
+      confirmed: user.confirmed,
+      blocked: user.blocked,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      profilePicture: user.profilePicture,
+      userType: user.userType,
+      memberships: (user.memberships ?? []).map((m: any) => ({
+        documentId: m.documentId,
+        tier: m.tier,
+        status: m.status,
+        startDate: m.startDate,
+        endDate: m.endDate,
+      })),
+    };
   },
 
   async volunteerApply(ctx) {
@@ -243,7 +264,17 @@ export default {
     if (!ctx.state.user) {
       return ctx.unauthorized('You must be logged in');
     }
-    const token = ctx.request.body.token || ctx.request.body.fcmToken;
+    const token = ctx.request.body.token ?? ctx.request.body.fcmToken;
+
+    if (token === null || token === '') {
+      await strapi.entityService.update(
+        'plugin::users-permissions.user',
+        ctx.state.user.id,
+        { data: { fcmToken: null } }
+      );
+      ctx.body = { ok: true };
+      return;
+    }
 
     if (!token) {
       strapi.log.warn(`No FCM token provided. Body: ${JSON.stringify(ctx.request.body)}`);

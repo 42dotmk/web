@@ -450,19 +450,33 @@ export interface ApiEventRequestEventRequest
     eventAgenda: Schema.Attribute.RichText;
     eventDate: Schema.Attribute.Date;
     eventEnd: Schema.Attribute.Time;
+    eventName: Schema.Attribute.String;
+    eventPurpose: Schema.Attribute.String;
     eventStart: Schema.Attribute.Time;
+    eventTheme: Schema.Attribute.String;
+    eventType: Schema.Attribute.String;
     expectedGuests: Schema.Attribute.Integer;
     initiatorEmail: Schema.Attribute.String;
+    initiatorName: Schema.Attribute.String;
+    initiatorPhoneNumber: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::event-request.event-request'
     > &
       Schema.Attribute.Private;
+    organization: Schema.Attribute.String;
     organizingEntity: Schema.Attribute.String;
+    physicalPresence: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
-    space: Schema.Attribute.Enumeration<
-      ['events-hall', 'workshop-area', 'electronics-area', 'full-space']
+    room: Schema.Attribute.Enumeration<
+      [
+        'events-hall',
+        'workshop-area',
+        'electronics-area',
+        'studio',
+        'full-space',
+      ]
     >;
     status: Schema.Attribute.Enumeration<['pending', 'approved']> &
       Schema.Attribute.DefaultTo<'pending'>;
@@ -683,7 +697,7 @@ export interface ApiMembershipMembership extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     startDate: Schema.Attribute.DateTime;
     status: Schema.Attribute.Enumeration<
-      ['active', 'inactive', 'cancelled', 'pending']
+      ['active', 'inactive', 'cancelled', 'cancel_pending', 'pending']
     > &
       Schema.Attribute.DefaultTo<'pending'>;
     stripeSubscriptionId: Schema.Attribute.String & Schema.Attribute.Private;
