@@ -17,5 +17,13 @@ export default {
         prefix: '',
       },
     },
+    {
+      method: 'POST',
+      path: '/volunteer/apply',
+      handler: 'user.volunteerApply',
+      config: {
+        prefix: '',
+      },
+    },
   ],
 }
