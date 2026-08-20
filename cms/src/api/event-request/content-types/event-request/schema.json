@@ -30,6 +30,10 @@
     "eventType": {
       "type": "string"
     },
+    "room": {
+      "type": "enumeration",
+      "enum": ["events-hall", "workshop-area", "electronics-area", "studio", "full-space"]
+    },
     "eventName": {
       "type": "string"
     },

@@ -446,6 +446,7 @@ export interface ApiEventRequestEventRequest
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    event: Schema.Attribute.Relation<'oneToOne', 'api::event.event'>;
     eventAgenda: Schema.Attribute.RichText;
     eventDate: Schema.Attribute.Date;
     eventEnd: Schema.Attribute.Time;
@@ -468,6 +469,17 @@ export interface ApiEventRequestEventRequest
     organizingEntity: Schema.Attribute.String;
     physicalPresence: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
+    room: Schema.Attribute.Enumeration<
+      [
+        'events-hall',
+        'workshop-area',
+        'electronics-area',
+        'studio',
+        'full-space',
+      ]
+    >;
+    status: Schema.Attribute.Enumeration<['pending', 'approved']> &
+      Schema.Attribute.DefaultTo<'pending'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -660,6 +672,47 @@ export interface ApiHomeHome extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiMembershipMembership extends Struct.CollectionTypeSchema {
+  collectionName: 'memberships';
+  info: {
+    description: 'Tracks user membership subscriptions';
+    displayName: 'Membership';
+    pluralName: 'memberships';
+    singularName: 'membership';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    endDate: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::membership.membership'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    startDate: Schema.Attribute.DateTime;
+    status: Schema.Attribute.Enumeration<
+      ['active', 'inactive', 'cancelled', 'cancel_pending', 'pending']
+    > &
+      Schema.Attribute.DefaultTo<'pending'>;
+    stripeSubscriptionId: Schema.Attribute.String & Schema.Attribute.Private;
+    tier: Schema.Attribute.Enumeration<['monthly', 'yearly']> &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
   collectionName: 'partners';
   info: {
@@ -720,6 +773,48 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+  };
+}
+
+export interface ApiProjectProject extends Struct.CollectionTypeSchema {
+  collectionName: 'projects';
+  info: {
+    description: 'Cached GitHub repositories for mobile app consumption';
+    displayName: 'Project';
+    pluralName: 'projects';
+    singularName: 'project';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    commit_activity: Schema.Attribute.JSON;
+    contributors: Schema.Attribute.JSON;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    github_repo_id: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    help_wanted_count: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    language: Schema.Attribute.String;
+    last_synced_at: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::project.project'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    owner_login: Schema.Attribute.String & Schema.Attribute.Required;
+    pr_count: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    pushed_at: Schema.Attribute.DateTime;
+    stargazers_count: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1238,6 +1333,10 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    memberships: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::membership.membership'
+    >;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
@@ -1251,6 +1350,7 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    stripeCustomerId: Schema.Attribute.String & Schema.Attribute.Private;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1264,6 +1364,8 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
+    userType: Schema.Attribute.Enumeration<['user', 'volunteer', 'member']> &
+      Schema.Attribute.DefaultTo<'user'>;
   };
 }
 
@@ -1282,7 +1384,9 @@ declare module '@strapi/strapi' {
       'api::event.event': ApiEventEvent;
       'api::gallery.gallery': ApiGalleryGallery;
       'api::home.home': ApiHomeHome;
+      'api::membership.membership': ApiMembershipMembership;
       'api::partner.partner': ApiPartnerPartner;
+      'api::project.project': ApiProjectProject;
       'api::user-event.user-event': ApiUserEventUserEvent;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

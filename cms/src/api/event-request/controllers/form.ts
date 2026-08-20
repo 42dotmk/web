@@ -5,6 +5,7 @@ const formToJsonMap = {
   "phone": "initiatorPhoneNumber",
   "company-name": "organization",
   "event-type": "eventType",
+  "room": "room",
   "event-name": "eventName",
   "event-theme": "eventTheme",
   "event-purpose": "eventPurpose",
@@ -16,6 +17,16 @@ const formToJsonMap = {
   "expected-guests": "expectedGuests",
 };
 
+const ROOM_KEYS = ['events-hall', 'workshop-area', 'electronics-area', 'studio', 'full-space'] as const;
+
+type RoomKey = (typeof ROOM_KEYS)[number];
+
+function parseRoom(value: unknown): RoomKey | undefined {
+  return typeof value === 'string' && (ROOM_KEYS as readonly string[]).includes(value)
+    ? (value as RoomKey)
+    : undefined;
+}
+
 interface EventRequestInput {
   organizingEntity: string;
   initiatorName: string;
@@ -23,6 +34,7 @@ interface EventRequestInput {
   initiatorPhoneNumber: string;
   organization: string;
   eventType: string;
+  room?: RoomKey;
   eventName: string;
   eventTheme: string;
   eventPurpose: string;
@@ -76,6 +88,8 @@ export default {
         return acc;
       }, {} as Record<string, unknown>);
 
+      const room = parseRoom(raw.room);
+
       const eventRequest: EventRequestInput = {
         organizingEntity: assertString(raw.organizingEntity, 'organizingEntity'),
         initiatorName: assertString(raw.initiatorName, 'initiatorName'),
@@ -83,6 +97,7 @@ export default {
         initiatorPhoneNumber: assertString(raw.initiatorPhoneNumber, 'initiatorPhoneNumber'),
         organization: assertString(raw.organization, 'organization'),
         eventType: assertString(raw.eventType, 'eventType'),
+        ...(room !== undefined ? { room } : {}),
         eventName: assertString(raw.eventName, 'eventName'),
         eventTheme: assertString(raw.eventTheme, 'eventTheme'),
         eventPurpose: assertString(raw.eventPurpose, 'eventPurpose'),
@@ -125,6 +140,7 @@ export default {
       <p><strong>Initiator phone</strong> number: ${eventRequest.initiatorPhoneNumber}</p>
       <p><strong>Organization:</strong> ${eventRequest.organization}</p>
       <p><strong>Event type</strong>: ${eventRequest.eventType}</p>
+      <p><strong>Room</strong>: ${eventRequest.room}</p>
       <p><strong>Event name</strong>: ${eventRequest.eventName}</p>
       <p><strong>Event theme</strong>: ${eventRequest.eventTheme}</p>
       <p><strong>Event purpose</strong>: ${eventRequest.eventPurpose}</p>
@@ -136,55 +152,41 @@ export default {
       <p><strong>Expected guests</strong>: ${eventRequest.expectedGuests}</p>
     `;
 
-      await strapi.plugins['email'].services.email.send({
-        to: eventRequest.initiatorEmail,
-        from: 'hello@42.mk',
-        replyTo: 'hello@42.mk',
-        subject: 'Your event request has been received! - 42.mk',
-        html: `Thank you for submitting your event request. We will get back to you as soon as possible.
-        Here's a copy of your request:
-        <br/><br/>
-        ${requestCopy}
-      `
-      });
+      try {
+        await strapi.plugins['email'].services.email.send({
+          to: eventRequest.initiatorEmail,
+          from: 'hello@42.mk',
+          replyTo: 'hello@42.mk',
+          subject: 'Your event request has been received! - 42.mk',
+          html: `Thank you for submitting your event request. We will get back to you as soon as possible.
+          Here's a copy of your request:
+          <br/><br/>
+          ${requestCopy}
+        `
+        });
 
-      await strapi.plugins['email'].services.email.send({
-        to: 'hello@42.mk',
-        from: 'hello@42.mk',
-        replyTo: eventRequest.initiatorEmail,
-        subject: `New event request from ${eventRequest.initiatorName}`,
-        html: `A new event request has been submitted. Here's a copy of the request:
-        <br/><br/>
-        ${requestCopy}
-      `
-      });
+        await strapi.plugins['email'].services.email.send({
+          to: 'hello@42.mk',
+          from: 'hello@42.mk',
+          replyTo: eventRequest.initiatorEmail,
+          subject: `New event request from ${eventRequest.initiatorName}`,
+          html: `A new event request has been submitted. Here's a copy of the request:
+          <br/><br/>
+          ${requestCopy}
+        `
+        });
+      } catch (emailError) {
+        console.error('Failed to send confirmation emails:', emailError);
+      }
 
       ctx.body = res;
     } catch (error) {
       console.error('Event request submission error:', error);
 
-      // Try to notify admin of the error
-      try {
-        await strapi.plugins['email'].services.email.send({
-          to: 'hello@42.mk',
-          from: 'hello@42.mk',
-          subject: '[ERROR] Event request submission failed',
-          html: `<p>An error occurred while processing an event request submission.</p>
-          <p><strong>Error:</strong> ${error.message || String(error)}</p>
-          <p><strong>Stack:</strong></p>
-          <pre>${error.stack || 'No stack trace available'}</pre>
-          <p><strong>Request body:</strong></p>
-          <pre>${JSON.stringify(body, null, 2)}</pre>
-        `
-        });
-      } catch (emailError) {
-        console.error('Failed to send error notification email:', emailError);
-      }
-
       ctx.status = 500;
       ctx.body = {
         error: {
-          message: 'Failed to submit event request. The administrator has been notified.',
+          message: 'Failed to submit event request.',
         }
       };
     }
