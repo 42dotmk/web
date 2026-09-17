@@ -24,6 +24,13 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 // });
 
 builder.Services.AddCors();
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient("Discord", client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(5);
+    client.DefaultRequestHeaders.UserAgent.ParseAdd("Base42/1.0");
+});
+builder.Services.AddSingleton<DiscordService>();
 
 var app = builder.Build();
 

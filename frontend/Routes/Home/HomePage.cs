@@ -26,15 +26,16 @@ public static partial class HomeModule
         )
     );
 
-  public static async Task<HtmlNode> Hero()
+  public static async Task<HtmlNode> Hero(DiscordService discordService, CancellationToken cancellationToken)
   {
-    var wgt = await GetDiscordWidget();
-    var present = wgt["presence_count"];
+    var discord = await discordService.GetSummaryAsync(cancellationToken);
     var rnd = new Random();
-    var members = wgt["members"].AsArray().OrderBy(x => rnd.Next()).Take(6).Select(m => m["avatar_url"].ToString());
-    var discordInfo = await GetDiscordInfo();
-    var totalCount = discordInfo["profile"]["member_count"];
-    
+    var members = discord.AvatarUrls.OrderBy(_ => rnd.Next()).Take(6);
+    var memberStatus = discord.OnlineCount is not null && discord.MemberCount is not null
+      ? $"{discord.OnlineCount}/{discord.MemberCount} members online"
+      : discord.OnlineCount is not null
+        ? $"{discord.OnlineCount} members online"
+        : "Join us on Discord";
 
     return Div(
         id("hero"),
@@ -56,7 +57,7 @@ public static partial class HomeModule
                   target("_blank"),
                   @class("flex justify-center items-center flex-wrap mb-4"),
                   ImgSrc("/img/discord.svg", @class("nav-img mr-1 fill-white discord-img")),
-                  $"{present}/{totalCount} members online",
+                  memberStatus,
                   Div( 
                     [
                       @class("p-2 flex -space-x-1 overflow-hidden"),
@@ -84,13 +85,13 @@ public static partial class HomeModule
         ));
   }
 
-  public static async Task<HtmlResult> HomePage(HttpRequest req)
+  public static async Task<HtmlResult> HomePage(HttpRequest req, DiscordService discordService)
   {
     var content = await GetStrapiEntry("home");
 
     var contentWithLayout = await WithLayout(
       "Base42",
-      await Hero(),
+      await Hero(discordService, req.HttpContext.RequestAborted),
       Div(@class("text-primary border-secondary-500 border-primary hidden")),
       Div(@class("container mx-auto p-10"),
         await MarkdownAsync(content, "Content")
